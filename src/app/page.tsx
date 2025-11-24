@@ -6,6 +6,8 @@ import Tabs from "@/components/Tabs";
 import QuestionSidebar from "@/components/QuestionSidebar";
 import BuilderArea from "@/components/BuilderArea";
 import PreviewArea from "@/components/PreviewArea";
+import JsonDrawer from "@/components/JsonDrawer";
+import JsonTab from "@/components/JsonTab";
 import {
   questionsReducer,
   createInitialQuestions,
@@ -17,6 +19,7 @@ type Tab = "build" | "preview" | "json";
 export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>("build");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isJsonDrawerOpen, setIsJsonDrawerOpen] = useState(false);
   const [questions, dispatch] = useReducer(
     questionsReducer,
     createInitialQuestions()
@@ -119,7 +122,11 @@ export default function Home() {
 
         <div className="flex-1 flex overflow-hidden">
           {/* Mobile: Tab-based content */}
-          <div className="flex-1 overflow-y-auto bg-white md:hidden">
+          <div
+            className={`flex-1 bg-white md:hidden ${
+              activeTab === "json" ? "overflow-hidden" : "overflow-y-auto"
+            }`}
+          >
             {activeTab === "build" && (
               <BuilderArea
                 questions={questions}
@@ -139,9 +146,7 @@ export default function Home() {
               />
             )}
             {activeTab === "json" && (
-              <div className="p-4 md:p-6">
-                <p className="text-zinc-600">JSON view</p>
-              </div>
+              <JsonTab questions={questions} responses={responses} />
             )}
           </div>
 
@@ -169,8 +174,13 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="hidden md:block h-12 border-t border-zinc-200 bg-white">
-        {/* JSON drawer - will be populated in Step 7 */}
+      <div className="hidden md:block">
+        <JsonDrawer
+          questions={questions}
+          responses={responses}
+          isOpen={isJsonDrawerOpen}
+          onToggle={() => setIsJsonDrawerOpen(!isJsonDrawerOpen)}
+        />
       </div>
     </div>
   );

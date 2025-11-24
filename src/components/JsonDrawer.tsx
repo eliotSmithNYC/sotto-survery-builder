@@ -1,0 +1,79 @@
+"use client";
+
+import { Question } from "@/lib/types";
+import { SurveyResponse } from "@/lib/types";
+import JsonPanel from "./JsonPanel";
+
+interface JsonDrawerProps {
+  questions: Question[];
+  responses: SurveyResponse;
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+export default function JsonDrawer({
+  questions,
+  responses,
+  isOpen,
+  onToggle,
+}: JsonDrawerProps) {
+  return (
+    <div
+      className={`border-t border-zinc-200 bg-white transition-all duration-300 ease-in-out ${
+        isOpen ? "h-96" : "h-12"
+      }`}
+    >
+      {isOpen ? (
+        <div className="h-full flex flex-col">
+          <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-200">
+            <span className="text-sm font-medium text-zinc-900">JSON</span>
+            <button
+              onClick={onToggle}
+              className="p-1 text-zinc-600 hover:text-zinc-900 transition-colors"
+              aria-label="Collapse JSON drawer"
+            >
+              <svg
+                className="w-5 h-5 transform rotate-180 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <JsonPanel questions={questions} responses={responses} />
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={onToggle}
+          className="w-full h-full flex items-center justify-between px-4 hover:bg-zinc-50 transition-colors"
+          aria-label="Expand JSON drawer"
+        >
+          <span className="text-sm font-medium text-zinc-900">JSON</span>
+          <svg
+            className="w-5 h-5 text-zinc-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
+}
+
