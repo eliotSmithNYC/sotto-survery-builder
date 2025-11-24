@@ -1,0 +1,22 @@
+export type QuestionType = "text" | "multipleChoice";
+
+export interface ChoiceOption {
+  id: string;
+  text: string;
+}
+
+export interface Question {
+  id: string;
+  label: string;
+  type: QuestionType;
+  required: boolean;
+  options: ChoiceOption[]; // ignored for text
+}
+
+export interface SurveyDefinition {
+  questions: Question[];
+}
+
+// questionId -> value (for now always string)
+export type SurveyResponse = Record<string, string>;
+
