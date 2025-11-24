@@ -153,7 +153,7 @@ export default function QuestionCard({
             value={question.label}
             onChange={handleLabelChange}
             placeholder="Enter question text..."
-            className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+            className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
           />
         </div>
 
@@ -210,7 +210,7 @@ export default function QuestionCard({
                       handleOptionTextChange(option.id, e.target.value)
                     }
                     placeholder={`Option ${index + 1}`}
-                    className="flex-1 px-3 py-2 border border-zinc-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
                   />
                   <button
                     onClick={() => handleRemoveOption(option.id)}

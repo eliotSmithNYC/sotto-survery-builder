@@ -37,7 +37,7 @@ export default function PreviewQuestion({
           onFocus={onFocus}
           placeholder="Type your answer here..."
           rows={4}
-          className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent resize-y"
+          className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent resize-y"
         />
       ) : (
         <div className="space-y-2">
