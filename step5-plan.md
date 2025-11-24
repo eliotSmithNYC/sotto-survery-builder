@@ -1,9 +1,11 @@
 # Step 5: Preview Area Component - Detailed Implementation Plan
 
 ## Overview
+
 Build the interactive survey preview that renders questions as a respondent would see them, with full interactivity and live response state updates.
 
 ## Current State Assessment
+
 - ✅ Steps 1-4 complete
 - ✅ Layout structure in place
 - ✅ State management wired (questions reducer, responses state exists but unused)
@@ -15,9 +17,11 @@ Build the interactive survey preview that renders questions as a respondent woul
 ## Files to Create
 
 ### 1. `src/components/PreviewArea.tsx`
+
 Main container component for the preview area.
 
 **Props:**
+
 - `questions: Question[]` - All questions to render
 - `selectedQuestionId?: string` - Currently selected question ID (for highlighting)
 - `responses: SurveyResponse` - Current response values
@@ -25,6 +29,7 @@ Main container component for the preview area.
 - `onSelectQuestion?: (questionId: string) => void` - Optional handler to select question from preview
 
 **Responsibilities:**
+
 - Render vertical stack of PreviewQuestion components
 - Handle empty state (no questions)
 - Container styling consistent with BuilderArea
@@ -32,15 +37,18 @@ Main container component for the preview area.
 - Pass through all props to PreviewQuestion components
 
 **Key Features:**
+
 - Empty state message when no questions exist
 - Vertical spacing between questions (space-y-4 or similar)
 - Max-width constraint for readability (max-w-3xl)
 - Padding consistent with BuilderArea (p-4 md:p-6)
 
 ### 2. `src/components/PreviewQuestion.tsx`
+
 Individual question rendering component.
 
 **Props:**
+
 - `question: Question` - Question to render
 - `isSelected: boolean` - Whether this question is currently selected
 - `value: string` - Current response value (from responses state)
@@ -48,6 +56,7 @@ Individual question rendering component.
 - `onFocus?: () => void` - Optional handler when question receives focus (for selection)
 
 **Responsibilities:**
+
 - Render question label with required indicator
 - Render appropriate input based on question type:
   - Text: `<textarea>` element
@@ -58,6 +67,7 @@ Individual question rendering component.
 **Question Type Rendering:**
 
 **Text Questions:**
+
 - Label: Question label + required asterisk if required
 - Input: `<textarea>` with:
   - Rows: 4 (reasonable default)
@@ -67,6 +77,7 @@ Individual question rendering component.
   - Styling: Consistent with builder inputs (border, rounded, focus states)
 
 **Multiple Choice Questions:**
+
 - Label: Question label + required asterisk if required
 - Options: Radio button group
   - Each option as `<label>` containing:
@@ -80,11 +91,13 @@ Individual question rendering component.
   - Styling: Clean radio buttons with proper spacing
 
 **Required Indicator:**
-- Show asterisk (*) after question label if `question.required` is true
+
+- Show asterisk (\*) after question label if `question.required` is true
 - Style: text-zinc-500 or similar subtle color
 - Format: `{question.label} *` or `{question.label}*` (choose one consistent style)
 
 **Selected Highlighting:**
+
 - When `isSelected` is true, apply visual highlight:
   - Option 1: Ring border (ring-2 ring-zinc-900) - matches BuilderArea style
   - Option 2: Background color (bg-zinc-50)
@@ -92,6 +105,7 @@ Individual question rendering component.
   - Recommendation: Use ring-2 ring-zinc-900 to match QuestionCard selected style
 
 **Styling:**
+
 - Card-like container with border (border border-zinc-200 rounded-lg bg-white)
 - Padding: p-4 or p-6
 - Spacing between label and input: mb-3 or mb-4
@@ -100,7 +114,9 @@ Individual question rendering component.
 ## Layout Changes
 
 ### Desktop Layout (md and up)
+
 **New Structure:**
+
 - Left: Question Sidebar (existing)
 - Center: Split into two columns:
   - Left column: BuilderArea (question editing)
@@ -108,6 +124,7 @@ Individual question rendering component.
 - Bottom: JSON drawer (Step 7)
 
 **Implementation:**
+
 - Remove the right Properties Panel column (lines 135-137 in page.tsx)
 - Split the center area into two columns on desktop
 - Both Builder and Preview visible simultaneously on desktop
@@ -115,7 +132,9 @@ Individual question rendering component.
 - Add border between columns: `border-l border-zinc-200` on PreviewArea container
 
 ### Mobile Layout (below md)
+
 **Keep existing tab system:**
+
 - Tabs: Build / Preview / JSON
 - Preview shown only in Preview tab
 - Builder shown only in Build tab
@@ -126,6 +145,7 @@ Individual question rendering component.
 ### Update `src/app/page.tsx`
 
 **Changes needed:**
+
 1. Import PreviewArea component
 2. Remove Properties Panel column (lines 135-137)
 3. Restructure center area for desktop side-by-side layout:
@@ -140,17 +160,19 @@ Individual question rendering component.
    - `onSelectQuestion={setSelectedQuestionId}` (enable selection from preview)
 
 **Response State Handler:**
+
 ```typescript
 const handleResponseChange = (questionId: string, value: string) => {
-  setResponses(prev => ({
+  setResponses((prev) => ({
     ...prev,
-    [questionId]: value
+    [questionId]: value,
   }));
 };
 ```
 
 **Selection from Preview:**
 Enable clicking/focusing questions in preview to select them in the builder:
+
 - Pass `onSelectQuestion={setSelectedQuestionId}` to PreviewArea
 - PreviewArea passes `onFocus={() => onSelectQuestion?.(question.id)}` to PreviewQuestion
 - PreviewQuestion calls `onFocus?.()` when input/textarea receives focus
@@ -161,17 +183,20 @@ Enable clicking/focusing questions in preview to select them in the builder:
 **Goal:** When a question is selected from sidebar/builder, scroll it into view in preview.
 
 **Implementation Approach:**
+
 1. Use `useRef` in PreviewQuestion to create ref for each question element
 2. Use `useEffect` in PreviewArea to scroll selected question into view
 3. Or: Use `useEffect` in page.tsx to handle scroll when `validSelectedQuestionId` changes
 
-**Recommendation:** 
+**Recommendation:**
+
 - Implement basic scroll-to using `useRef` and `scrollIntoView` in PreviewArea
 - Use `useEffect` that watches `selectedQuestionId` prop
 - Only scroll if question is actually rendered (exists in questions array)
 - Use `behavior: 'smooth'` for smooth scrolling
 
 **Code Pattern:**
+
 ```typescript
 // In PreviewArea.tsx
 const questionRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -179,8 +204,8 @@ const questionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 useEffect(() => {
   if (selectedQuestionId && questionRefs.current[selectedQuestionId]) {
     questionRefs.current[selectedQuestionId]?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
+      behavior: "smooth",
+      block: "center",
     });
   }
 }, [selectedQuestionId]);
@@ -191,6 +216,7 @@ useEffect(() => {
 ## Implementation Steps
 
 ### Step 5.1: Create PreviewQuestion Component
+
 1. Create `src/components/PreviewQuestion.tsx`
 2. Implement basic structure with props interface
 3. Add question label rendering with required indicator
@@ -200,6 +226,7 @@ useEffect(() => {
 7. Test with both question types
 
 ### Step 5.2: Create PreviewArea Component
+
 1. Create `src/components/PreviewArea.tsx`
 2. Implement container structure
 3. Add empty state handling
@@ -208,6 +235,7 @@ useEffect(() => {
 6. Add proper styling and spacing
 
 ### Step 5.3: Integrate into Main Page
+
 1. Update `src/app/page.tsx`
 2. Import PreviewArea
 3. Remove Properties Panel column (right side)
@@ -220,6 +248,7 @@ useEffect(() => {
 8. Verify desktop side-by-side layout works
 
 ### Step 5.4: Add Scroll-to Behavior and Selection from Preview
+
 1. Add refs to PreviewQuestion components
 2. Implement scroll effect in PreviewArea (useEffect watching selectedQuestionId)
 3. Add onFocus handlers to PreviewQuestion inputs/textarea
@@ -229,6 +258,7 @@ useEffect(() => {
 7. Ensure smooth scrolling works correctly
 
 ### Step 5.5: Polish and Testing
+
 1. Verify all question types render correctly
 2. Test response state updates (check in console or prepare for JSON view)
 3. Test required indicators display correctly
@@ -240,26 +270,32 @@ useEffect(() => {
 ## Design Decisions
 
 ### Text Input vs Textarea
+
 **Decision:** Use `<textarea>` for text questions
 **Rationale:** Allows longer responses, more flexible for users, matches typical survey UX
 
 ### Required Indicator Style
-**Decision:** Asterisk (*) after label
+
+**Decision:** Asterisk (\*) after label
 **Rationale:** Standard pattern, matches existing sidebar indicator style
 
 ### Selected Highlighting
+
 **Decision:** Ring border (ring-2 ring-zinc-900)
 **Rationale:** Matches QuestionCard selected style for consistency
 
 ### Response State Structure
+
 **Decision:** Use existing `SurveyResponse` type (Record<string, string>)
 **Rationale:** Already defined, simple and extensible
 
 ### Scroll-to Behavior
+
 **Decision:** Implement smooth scroll-to when question selected
 **Rationale:** Improves UX, helps user see selected question in preview
 
 ### Selection from Preview
+
 **Decision:** Allow clicking/focusing questions in preview to select them in builder
 **Rationale:** Improves bidirectional navigation, makes preview more interactive
 
@@ -290,4 +326,3 @@ useEffect(() => {
 - Properties Panel removed - all question editing happens in BuilderArea/QuestionCard
 - Desktop shows Builder and Preview side-by-side for better workflow
 - Mobile uses tabs to avoid cramped layout
-

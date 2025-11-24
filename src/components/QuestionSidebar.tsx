@@ -26,7 +26,9 @@ export default function QuestionSidebar({
     <div className="h-full flex flex-col">
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
-          <h2 className="text-sm font-semibold text-zinc-900 mb-3">Questions</h2>
+          <h2 className="text-sm font-semibold text-zinc-900 mb-3">
+            Questions
+          </h2>
           {questions.length === 0 ? (
             <p className="text-sm text-zinc-500">No questions yet</p>
           ) : (
@@ -70,4 +72,3 @@ export default function QuestionSidebar({
     </div>
   );
 }
-
