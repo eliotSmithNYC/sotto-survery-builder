@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Tabs from "@/components/Tabs";
 import QuestionSidebar from "@/components/QuestionSidebar";
 import BuilderArea from "@/components/BuilderArea";
+import PreviewArea from "@/components/PreviewArea";
 import {
   questionsReducer,
   createInitialQuestions,
@@ -72,6 +73,13 @@ export default function Home() {
     setSelectedQuestionId(questionId);
   };
 
+  const handleResponseChange = (questionId: string, value: string) => {
+    setResponses((prev) => ({
+      ...prev,
+      [questionId]: value,
+    }));
+  };
+
   return (
     <div className="flex flex-col h-screen bg-zinc-50">
       <Header
@@ -110,7 +118,8 @@ export default function Home() {
         </div>
 
         <div className="flex-1 flex overflow-hidden">
-          <div className="flex-1 overflow-y-auto bg-white">
+          {/* Mobile: Tab-based content */}
+          <div className="flex-1 overflow-y-auto bg-white md:hidden">
             {activeTab === "build" && (
               <BuilderArea
                 questions={questions}
@@ -121,9 +130,13 @@ export default function Home() {
               />
             )}
             {activeTab === "preview" && (
-              <div className="p-4 md:p-6">
-                <p className="text-zinc-600">Preview area</p>
-              </div>
+              <PreviewArea
+                questions={questions}
+                selectedQuestionId={validSelectedQuestionId}
+                responses={responses}
+                onResponseChange={handleResponseChange}
+                onSelectQuestion={setSelectedQuestionId}
+              />
             )}
             {activeTab === "json" && (
               <div className="p-4 md:p-6">
@@ -132,8 +145,26 @@ export default function Home() {
             )}
           </div>
 
-          <div className="hidden md:block w-64 border-l border-zinc-200 bg-white">
-            {/* Properties panel - will be populated in Step 6 */}
+          {/* Desktop: Side-by-side Builder and Preview */}
+          <div className="hidden md:flex flex-1 overflow-hidden">
+            <div className="flex-1 overflow-y-auto bg-white border-r border-zinc-200">
+              <BuilderArea
+                questions={questions}
+                selectedQuestionId={validSelectedQuestionId}
+                dispatch={dispatch}
+                onSelectQuestion={setSelectedQuestionId}
+                onDeleteQuestion={handleDeleteQuestion}
+              />
+            </div>
+            <div className="flex-1 overflow-y-auto bg-white">
+              <PreviewArea
+                questions={questions}
+                selectedQuestionId={validSelectedQuestionId}
+                responses={responses}
+                onResponseChange={handleResponseChange}
+                onSelectQuestion={setSelectedQuestionId}
+              />
+            </div>
           </div>
         </div>
       </div>

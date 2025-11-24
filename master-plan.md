@@ -68,6 +68,9 @@ Required indicator (asterisk or "(required)")
 Highlight currently selected question
 Connect to responses state (read/write)
 Scroll-to behavior when question selected
+Desktop: Show Builder and Preview side-by-side in center area
+Mobile: Preview shown in Preview tab
+Remove Properties Panel (redundant - all editing in QuestionCard)
 Files to create:
 
 src/components/PreviewArea.tsx
@@ -75,19 +78,9 @@ src/components/PreviewQuestion.tsx
 
 ---
 
-Step 6: Properties Panel Component
-Create the right-side properties panel:
-
-Desktop: fixed right column
-Mobile: shown within Build tab under question editor
-Placeholder when no question selected
-Question type selector
-Required toggle
-For multiple choice: simplified options list
-Sync with selected question state
-Files to create:
-
-## src/components/PropertiesPanel.tsx
+Step 6: (Skipped - Properties Panel removed)
+All question editing (type, required, options) is handled in QuestionCard component.
+No separate properties panel needed.
 
 Step 7: JSON Drawer/Panel Component
 Implement JSON views:
