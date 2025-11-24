@@ -2,13 +2,40 @@
 
 interface HeaderProps {
   onAddQuestion?: () => void;
+  onToggleSidebar?: () => void;
 }
 
-export default function Header({ onAddQuestion }: HeaderProps) {
+export default function Header({
+  onAddQuestion,
+  onToggleSidebar,
+}: HeaderProps) {
   return (
     <header className="border-b border-zinc-200 bg-white">
       <div className="flex items-center justify-between px-4 py-3 md:px-6">
-        <h1 className="text-lg font-semibold text-zinc-900">Survey Builder</h1>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onToggleSidebar}
+            className="md:hidden p-2 -ml-2 text-zinc-600 hover:text-zinc-900 transition-colors"
+            aria-label="Toggle sidebar"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+          <h1 className="text-lg font-semibold text-zinc-900">
+            Survey Builder
+          </h1>
+        </div>
         <button
           onClick={onAddQuestion}
           className="px-4 py-2 text-sm font-medium text-white bg-zinc-900 rounded-md hover:bg-zinc-800 transition-colors"

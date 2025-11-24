@@ -8,22 +8,49 @@ type Tab = "build" | "preview" | "json";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>("build");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleAddQuestion = () => {
     // Will be wired up in Step 3
   };
 
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleCloseSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-zinc-50">
-      <Header onAddQuestion={handleAddQuestion} />
+      <Header onAddQuestion={handleAddQuestion} onToggleSidebar={handleToggleSidebar} />
 
       <div className="md:hidden">
         <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
-        <div className="hidden md:flex w-64 border-r border-zinc-200 bg-white">
-          {/* Sidebar - will be populated in Step 2 */}
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* Mobile sidebar overlay */}
+        {isSidebarOpen && (
+          <div
+            className="md:hidden fixed inset-0 bg-black/50 z-40"
+            onClick={handleCloseSidebar}
+          />
+        )}
+
+        {/* Sidebar */}
+        <div
+          className={`fixed md:static inset-y-0 left-0 z-50 w-64 border-r border-zinc-200 bg-white transform transition-transform duration-300 ease-in-out ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+          }`}
+        >
+          <div className="h-full overflow-y-auto">
+            {/* Sidebar content - will be populated in Step 2 */}
+            <div className="p-4">
+              <p className="text-zinc-600">Question list</p>
+            </div>
+          </div>
         </div>
 
         <div className="flex-1 flex overflow-hidden">
