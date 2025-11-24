@@ -1,9 +1,10 @@
 "use client";
 
-import { useReducer, useState, useEffect, useRef } from "react";
+import { useReducer, useState, useMemo } from "react";
 import Header from "@/components/Header";
 import Tabs from "@/components/Tabs";
 import QuestionSidebar from "@/components/QuestionSidebar";
+import BuilderArea from "@/components/BuilderArea";
 import {
   questionsReducer,
   createInitialQuestions,
@@ -23,24 +24,40 @@ export default function Home() {
   const [selectedQuestionId, setSelectedQuestionId] = useState<
     string | undefined
   >(questions.length > 0 ? questions[0].id : undefined);
-  const prevQuestionsLengthRef = useRef(questions.length);
 
-  useEffect(() => {
-    if (questions.length > 0 && !selectedQuestionId) {
-      setSelectedQuestionId(questions[0].id);
-    } else if (questions.length === 0) {
-      setSelectedQuestionId(undefined);
-    } else if (questions.length > prevQuestionsLengthRef.current) {
-      const lastQuestion = questions[questions.length - 1];
+  const validSelectedQuestionId = useMemo(() => {
+    if (questions.length === 0) {
+      return undefined;
+    }
+    const selectedExists = questions.some((q) => q.id === selectedQuestionId);
+    if (selectedExists) {
+      return selectedQuestionId;
+    }
+    return questions[0]?.id;
+  }, [questions, selectedQuestionId]);
+
+  const handleAddQuestion = () => {
+    const newQuestions = questionsReducer(questions, { type: "addQuestion" });
+    dispatch({ type: "addQuestion" });
+    if (newQuestions.length > 0) {
+      const lastQuestion = newQuestions[newQuestions.length - 1];
       if (lastQuestion) {
         setSelectedQuestionId(lastQuestion.id);
       }
     }
-    prevQuestionsLengthRef.current = questions.length;
-  }, [questions, selectedQuestionId]);
+  };
 
-  const handleAddQuestion = () => {
-    dispatch({ type: "addQuestion" });
+  const handleDeleteQuestion = (questionId: string) => {
+    const wasSelected = validSelectedQuestionId === questionId;
+    dispatch({ type: "removeQuestion", id: questionId });
+    if (wasSelected) {
+      const remainingQuestions = questions.filter((q) => q.id !== questionId);
+      if (remainingQuestions.length > 0) {
+        setSelectedQuestionId(remainingQuestions[0].id);
+      } else {
+        setSelectedQuestionId(undefined);
+      }
+    }
   };
 
   const handleToggleSidebar = () => {
@@ -85,7 +102,7 @@ export default function Home() {
         >
           <QuestionSidebar
             questions={questions}
-            selectedQuestionId={selectedQuestionId}
+            selectedQuestionId={validSelectedQuestionId}
             onSelectQuestion={handleSelectQuestion}
             onAddQuestion={handleAddQuestion}
             onClose={handleCloseSidebar}
@@ -94,11 +111,14 @@ export default function Home() {
 
         <div className="flex-1 flex overflow-hidden">
           <div className="flex-1 overflow-y-auto bg-white">
-            {/* Builder area - will be populated in Step 4 */}
             {activeTab === "build" && (
-              <div className="p-4 md:p-6">
-                <p className="text-zinc-600">Builder area</p>
-              </div>
+              <BuilderArea
+                questions={questions}
+                selectedQuestionId={validSelectedQuestionId}
+                dispatch={dispatch}
+                onSelectQuestion={setSelectedQuestionId}
+                onDeleteQuestion={handleDeleteQuestion}
+              />
             )}
             {activeTab === "preview" && (
               <div className="p-4 md:p-6">
