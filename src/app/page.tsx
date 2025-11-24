@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Tabs from "@/components/Tabs";
+import QuestionSidebar from "@/components/QuestionSidebar";
 
 type Tab = "build" | "preview" | "json";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>("build");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [selectedQuestionId, setSelectedQuestionId] = useState<string | undefined>();
 
   const handleAddQuestion = () => {
     // Will be wired up in Step 3
@@ -20,6 +22,10 @@ export default function Home() {
 
   const handleCloseSidebar = () => {
     setIsSidebarOpen(false);
+  };
+
+  const handleSelectQuestion = (questionId: string) => {
+    setSelectedQuestionId(questionId);
   };
 
   return (
@@ -45,12 +51,13 @@ export default function Home() {
             isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
           }`}
         >
-          <div className="h-full overflow-y-auto">
-            {/* Sidebar content - will be populated in Step 2 */}
-            <div className="p-4">
-              <p className="text-zinc-600">Question list</p>
-            </div>
-          </div>
+          <QuestionSidebar
+            questions={[]}
+            selectedQuestionId={selectedQuestionId}
+            onSelectQuestion={handleSelectQuestion}
+            onAddQuestion={handleAddQuestion}
+            onClose={handleCloseSidebar}
+          />
         </div>
 
         <div className="flex-1 flex overflow-hidden">
