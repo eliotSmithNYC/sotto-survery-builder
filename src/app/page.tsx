@@ -1,19 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useReducer, useState, useEffect, useRef } from "react";
 import Header from "@/components/Header";
 import Tabs from "@/components/Tabs";
 import QuestionSidebar from "@/components/QuestionSidebar";
+import {
+  questionsReducer,
+  createInitialQuestions,
+} from "@/lib/questionsReducer";
+import { SurveyResponse } from "@/lib/types";
 
 type Tab = "build" | "preview" | "json";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>("build");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [selectedQuestionId, setSelectedQuestionId] = useState<string | undefined>();
+  const [questions, dispatch] = useReducer(
+    questionsReducer,
+    createInitialQuestions()
+  );
+  const [responses, setResponses] = useState<SurveyResponse>({});
+  const [selectedQuestionId, setSelectedQuestionId] = useState<
+    string | undefined
+  >(questions.length > 0 ? questions[0].id : undefined);
+  const prevQuestionsLengthRef = useRef(questions.length);
+
+  useEffect(() => {
+    if (questions.length > 0 && !selectedQuestionId) {
+      setSelectedQuestionId(questions[0].id);
+    } else if (questions.length === 0) {
+      setSelectedQuestionId(undefined);
+    } else if (questions.length > prevQuestionsLengthRef.current) {
+      const lastQuestion = questions[questions.length - 1];
+      if (lastQuestion) {
+        setSelectedQuestionId(lastQuestion.id);
+      }
+    }
+    prevQuestionsLengthRef.current = questions.length;
+  }, [questions, selectedQuestionId]);
 
   const handleAddQuestion = () => {
-    // Will be wired up in Step 3
+    dispatch({ type: "addQuestion" });
   };
 
   const handleToggleSidebar = () => {
@@ -30,7 +57,10 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen bg-zinc-50">
-      <Header onAddQuestion={handleAddQuestion} onToggleSidebar={handleToggleSidebar} />
+      <Header
+        onAddQuestion={handleAddQuestion}
+        onToggleSidebar={handleToggleSidebar}
+      />
 
       <div className="md:hidden">
         <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
@@ -48,11 +78,13 @@ export default function Home() {
         {/* Sidebar */}
         <div
           className={`fixed md:static inset-y-0 left-0 z-50 w-64 border-r border-zinc-200 bg-white transform transition-transform duration-300 ease-in-out ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+            isSidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full md:translate-x-0"
           }`}
         >
           <QuestionSidebar
-            questions={[]}
+            questions={questions}
             selectedQuestionId={selectedQuestionId}
             onSelectQuestion={handleSelectQuestion}
             onAddQuestion={handleAddQuestion}
