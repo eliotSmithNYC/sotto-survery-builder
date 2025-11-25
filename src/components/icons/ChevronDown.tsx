@@ -2,7 +2,9 @@ interface ChevronDownProps {
   className?: string;
 }
 
-export default function ChevronDown({ className = "w-5 h-5" }: ChevronDownProps) {
+export default function ChevronDown({
+  className = "w-5 h-5",
+}: ChevronDownProps) {
   return (
     <svg
       className={className}
@@ -19,5 +21,3 @@ export default function ChevronDown({ className = "w-5 h-5" }: ChevronDownProps)
     </svg>
   );
 }
-
-

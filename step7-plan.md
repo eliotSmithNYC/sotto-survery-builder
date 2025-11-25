@@ -1,9 +1,11 @@
 # Step 7: JSON Drawer/Panel Component - Detailed Implementation Plan
 
 ## Overview
+
 Implement JSON views for both survey definition and responses, with different UI patterns for desktop (collapsible bottom drawer) and mobile (JSON tab content).
 
 ## Current State Assessment
+
 - ✅ Steps 1-5 complete
 - ✅ Layout structure in place
 - ✅ State management wired (questions reducer, responses state)
@@ -16,19 +18,23 @@ Implement JSON views for both survey definition and responses, with different UI
 ## Files to Create
 
 ### 1. `src/components/JsonPanel.tsx`
+
 Shared component that displays JSON content with tabs for "Definition" and "Responses".
 
 **Props:**
+
 - `questions: Question[]` - Survey questions for definition JSON
 - `responses: SurveyResponse` - Current response values for responses JSON
 
 **Responsibilities:**
+
 - Render tab buttons for "Definition" and "Responses"
 - Display pretty-printed JSON for selected tab
 - Handle copy to clipboard functionality
 - Format JSON with proper indentation
 
 **Key Features:**
+
 - Two tabs: "Definition" and "Responses"
 - Active tab state management
 - Pretty-printed JSON (2-space indentation)
@@ -41,6 +47,7 @@ Shared component that displays JSON content with tabs for "Definition" and "Resp
 **JSON Format:**
 
 **Definition JSON:**
+
 ```json
 {
   "questions": [
@@ -61,6 +68,7 @@ Shared component that displays JSON content with tabs for "Definition" and "Resp
 ```
 
 **Responses JSON:**
+
 ```json
 {
   "questionId1": "response value",
@@ -69,6 +77,7 @@ Shared component that displays JSON content with tabs for "Definition" and "Resp
 ```
 
 **Styling:**
+
 - Container: `bg-white border border-zinc-200 rounded-lg`
 - Tabs: Horizontal button group with active state
 - JSON display: `font-mono text-sm` with proper padding
@@ -76,15 +85,18 @@ Shared component that displays JSON content with tabs for "Definition" and "Resp
 - Scrollable: `overflow-auto` for long content
 
 ### 2. `src/components/JsonDrawer.tsx`
+
 Desktop collapsible bottom drawer component.
 
 **Props:**
+
 - `questions: Question[]` - Survey questions
 - `responses: SurveyResponse` - Current responses
 - `isOpen: boolean` - Whether drawer is expanded
 - `onToggle: () => void` - Handler to toggle drawer
 
 **Responsibilities:**
+
 - Render collapsible drawer UI
 - Show collapsed state (small bar with "JSON" label)
 - Show expanded state (full JsonPanel)
@@ -92,6 +104,7 @@ Desktop collapsible bottom drawer component.
 - Position at bottom of screen
 
 **Key Features:**
+
 - Collapsed state: Small bar (h-12) with "JSON" label and expand icon
 - Expanded state: Full drawer with JsonPanel (h-96 or similar)
 - Smooth transition animation
@@ -100,24 +113,29 @@ Desktop collapsible bottom drawer component.
 - Toggle button with chevron icon (up when open, down when closed)
 
 **Styling:**
+
 - Collapsed: `h-12 border-t border-zinc-200 bg-white flex items-center justify-between px-4`
 - Expanded: `h-96 border-t border-zinc-200 bg-white`
 - Transition: `transition-all duration-300 ease-in-out`
 - Shadow when expanded: `shadow-lg` (optional)
 
 ### 3. `src/components/JsonTab.tsx`
+
 Mobile JSON tab content component (wrapper for JsonPanel).
 
 **Props:**
+
 - `questions: Question[]` - Survey questions
 - `responses: SurveyResponse` - Current responses
 
 **Responsibilities:**
+
 - Render JsonPanel in mobile-friendly layout
 - Full-width container
 - Proper padding and spacing
 
 **Key Features:**
+
 - Full-width container
 - Padding consistent with other tabs (p-4 md:p-6)
 - Scrollable content area
@@ -126,22 +144,28 @@ Mobile JSON tab content component (wrapper for JsonPanel).
 ## Layout Changes
 
 ### Desktop Layout
+
 **Current State:**
+
 - Bottom drawer placeholder exists (line 172-174 in page.tsx)
 - Empty div with border
 
 **Changes Needed:**
+
 - Replace placeholder with JsonDrawer component
 - Add state for drawer open/closed (`isJsonDrawerOpen`)
 - Pass questions and responses props
 - Initially collapsed (isOpen={false})
 
 ### Mobile Layout
+
 **Current State:**
+
 - JSON tab placeholder exists (line 141-144 in page.tsx)
 - Shows "JSON view" text
 
 **Changes Needed:**
+
 - Replace placeholder with JsonTab component
 - Pass questions and responses props
 - Full-width scrollable content
@@ -151,6 +175,7 @@ Mobile JSON tab content component (wrapper for JsonPanel).
 ### Update `src/app/page.tsx`
 
 **Changes needed:**
+
 1. Import JsonDrawer and JsonTab components
 2. Add state for JSON drawer: `const [isJsonDrawerOpen, setIsJsonDrawerOpen] = useState(false)`
 3. Replace desktop JSON drawer placeholder (line 172-174) with JsonDrawer:
@@ -164,12 +189,11 @@ Mobile JSON tab content component (wrapper for JsonPanel).
    ```
 4. Replace mobile JSON tab placeholder (line 141-144) with JsonTab:
    ```tsx
-   {activeTab === "json" && (
-     <JsonTab
-       questions={questions}
-       responses={responses}
-     />
-   )}
+   {
+     activeTab === "json" && (
+       <JsonTab questions={questions} responses={responses} />
+     );
+   }
    ```
 
 ## Implementation Details
@@ -177,43 +201,40 @@ Mobile JSON tab content component (wrapper for JsonPanel).
 ### JSON Formatting
 
 **Use `JSON.stringify` with formatting:**
+
 ```typescript
 const formattedJson = JSON.stringify(data, null, 2);
 ```
 
 **For Definition:**
+
 ```typescript
-const definitionJson = JSON.stringify(
-  { questions },
-  null,
-  2
-);
+const definitionJson = JSON.stringify({ questions }, null, 2);
 ```
 
 **For Responses:**
+
 ```typescript
-const responsesJson = JSON.stringify(
-  responses,
-  null,
-  2
-);
+const responsesJson = JSON.stringify(responses, null, 2);
 ```
 
 ### Copy to Clipboard
 
 **Implementation:**
+
 ```typescript
 const handleCopy = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
     // Optional: Show toast/notification
   } catch (err) {
-    console.error('Failed to copy:', err);
+    console.error("Failed to copy:", err);
   }
 };
 ```
 
 **UI:**
+
 - Small button next to each tab or below JSON display
 - Icon: Copy/clipboard icon (SVG)
 - Optional: Show "Copied!" feedback (can use state + timeout)
@@ -221,11 +242,15 @@ const handleCopy = async (text: string) => {
 ### Tab State Management
 
 **In JsonPanel:**
+
 ```typescript
-const [activeTab, setActiveTab] = useState<"definition" | "responses">("definition");
+const [activeTab, setActiveTab] = useState<"definition" | "responses">(
+  "definition"
+);
 ```
 
 **Tab Buttons:**
+
 - Horizontal layout
 - Active: `bg-zinc-900 text-white`
 - Inactive: `bg-zinc-100 text-zinc-600 hover:bg-zinc-200`
@@ -234,11 +259,13 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 ### Drawer Animation
 
 **Height transition:**
+
 - Use CSS transitions on height
 - Or use max-height with transition
 - Smooth expand/collapse
 
 **Chevron icon rotation:**
+
 - Up when open (180deg rotation)
 - Down when closed (0deg)
 - Transition: `transition-transform duration-300`
@@ -246,6 +273,7 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 ## Implementation Steps
 
 ### Step 7.1: Create JsonPanel Component
+
 1. Create `src/components/JsonPanel.tsx`
 2. Implement props interface
 3. Add tab state management
@@ -258,6 +286,7 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 10. Test with sample data
 
 ### Step 7.2: Create JsonDrawer Component
+
 1. Create `src/components/JsonDrawer.tsx`
 2. Implement props interface
 3. Add collapsed state UI (bar with "JSON" label)
@@ -268,6 +297,7 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 8. Test expand/collapse behavior
 
 ### Step 7.3: Create JsonTab Component
+
 1. Create `src/components/JsonTab.tsx`
 2. Implement props interface
 3. Wrap JsonPanel in mobile-friendly container
@@ -276,6 +306,7 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 6. Test on mobile viewport
 
 ### Step 7.4: Integrate into Main Page
+
 1. Update `src/app/page.tsx`
 2. Import JsonDrawer and JsonTab
 3. Add `isJsonDrawerOpen` state
@@ -287,6 +318,7 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 9. Verify JSON updates live as state changes
 
 ### Step 7.5: Polish and Testing
+
 1. Verify JSON formatting is correct
 2. Test copy to clipboard functionality
 3. Test with empty questions array
@@ -303,30 +335,37 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 ## Design Decisions
 
 ### JSON Format Structure
+
 **Decision:** Use `{ questions: Question[] }` for definition
 **Rationale:** Matches SurveyDefinition type, clear structure
 
 ### Tab Default
+
 **Decision:** Default to "Definition" tab
 **Rationale:** Definition is more stable, responses change frequently
 
 ### Drawer Default State
+
 **Decision:** Initially collapsed
 **Rationale:** Keeps main content visible, JSON is secondary feature
 
 ### Copy Button Placement
+
 **Decision:** Place copy button near JSON display (top-right or bottom-right)
 **Rationale:** Easy to find, doesn't interfere with JSON reading
 
 ### Drawer Height
+
 **Decision:** Use fixed height (h-96 or similar) when expanded
 **Rationale:** Predictable layout, doesn't take over entire screen
 
 ### Animation
+
 **Decision:** Smooth CSS transitions for drawer expand/collapse
 **Rationale:** Better UX, feels polished
 
 ### Monospace Font
+
 **Decision:** Use `font-mono` for JSON display
 **Rationale:** Standard for code/JSON, improves readability
 
@@ -369,5 +408,3 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 - Empty states should still show valid JSON (empty arrays/objects)
 - No need for JSON validation or error handling (we control the data structure)
 - Optional: Could add syntax highlighting library later, but not required for Step 7
-
-

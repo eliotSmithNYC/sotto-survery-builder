@@ -186,25 +186,35 @@ export default function Home() {
 
           {/* Desktop: Side-by-side Builder and Preview */}
           <div className="hidden md:flex flex-1 overflow-hidden">
-            <div className="flex-1 overflow-y-auto bg-white border-r border-zinc-200">
-              <BuilderArea
-                questions={questions}
-                selectedQuestionId={validSelectedQuestionId}
-                dispatch={dispatch}
-                onSelectQuestion={handleSelectQuestion}
-                onDeleteQuestion={handleDeleteQuestion}
-                onAddQuestion={handleAddQuestion}
-                onTypeChange={handleTypeChange}
-              />
+            <div className="flex-1 flex flex-col overflow-hidden bg-white border-r border-zinc-200">
+              <div className="px-6 py-4 border-b border-zinc-200 bg-zinc-50">
+                <h2 className="text-sm font-semibold text-zinc-900">Builder</h2>
+              </div>
+              <div className="flex-1 overflow-y-auto">
+                <BuilderArea
+                  questions={questions}
+                  selectedQuestionId={validSelectedQuestionId}
+                  dispatch={dispatch}
+                  onSelectQuestion={handleSelectQuestion}
+                  onDeleteQuestion={handleDeleteQuestion}
+                  onAddQuestion={handleAddQuestion}
+                  onTypeChange={handleTypeChange}
+                />
+              </div>
             </div>
-            <div className="flex-1 overflow-y-auto bg-white">
-              <PreviewArea
-                questions={questions}
-                selectedQuestionId={validSelectedQuestionId}
-                responses={responses}
-                onResponseChange={handleResponseChange}
-                onSelectQuestion={setSelectedQuestionId}
-              />
+            <div className="flex-1 flex flex-col overflow-hidden bg-white">
+              <div className="px-6 py-4 border-b border-zinc-200 bg-zinc-50">
+                <h2 className="text-sm font-semibold text-zinc-900">Preview</h2>
+              </div>
+              <div className="flex-1 overflow-y-auto">
+                <PreviewArea
+                  questions={questions}
+                  selectedQuestionId={validSelectedQuestionId}
+                  responses={responses}
+                  onResponseChange={handleResponseChange}
+                  onSelectQuestion={setSelectedQuestionId}
+                />
+              </div>
             </div>
           </div>
         </div>
