@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Survey Builder
 
-## Getting Started
+A coding exercise building a survey builder with Next.js, React, and Tailwind CSS. Create questions, preview the survey, and view JSON output.
 
-First, run the development server:
+## Running the Project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What It Does
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Add, edit, and delete questions
+- Two question types: freeform text and multiple choice
+- Reorder questions with up/down controls
+- Live preview of the survey
+- View survey definition and responses as JSON
+- Responsive design: desktop multi-column layout, mobile tab navigation
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+**State Management**: Uses `useReducer` for questions and `useState` for responses. No global state library.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Component Structure**: 
+- Layout components handle responsive breakpoints (`ResponsiveLayout`, `DesktopLayout`, `MobileLayout`)
+- Feature components are focused and composable (`BuilderArea`, `PreviewArea`, `QuestionSidebar`)
+- UI components are minimal and reusable
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Validation**: Zod schemas validate question structure. The app prevents adding new questions until all current ones are valid.
 
-## Deploy on Vercel
+**Responsive Design**: The responsive approach shows how I'd think about extensibility. Desktop uses a multi-column layout; mobile switches to tabs to avoid cramming too much on small screens.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## What I'd Add With More Time
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Immediate improvements:**
+- Download/export JSON functionality
+- Better error handling and edge cases
+- Duplicate question feature
+- Keyboard shortcuts for common actions
+
+**Production features:**
+- Rich media (images, video) in questions
+- Control flow / skip logic (conditional questions based on answers)
+- Save and share surveys (backend integration, team collaboration)
+- Publish surveys to public URLs
+- Question library for reusing questions across surveys
+- Additional question types (ratings, dates, file uploads)
+
+The current structure makes adding these features straightforward - new question types fit into the reducer pattern, and the component composition allows for easy extension.
