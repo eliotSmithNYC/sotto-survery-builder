@@ -31,7 +31,10 @@ export default function PreviewArea({
     }
   }, [selectedQuestionId]);
 
-  const setQuestionRef = (questionId: string, element: HTMLDivElement | null) => {
+  const setQuestionRef = (
+    questionId: string,
+    element: HTMLDivElement | null
+  ) => {
     questionRefs.current[questionId] = element;
   };
 
@@ -52,10 +55,7 @@ export default function PreviewArea({
     <div className="p-4 md:p-6">
       <div className="space-y-6 max-w-[560px] mx-auto">
         {questions.map((question) => (
-          <div
-            key={question.id}
-            ref={(el) => setQuestionRef(question.id, el)}
-          >
+          <div key={question.id} ref={(el) => setQuestionRef(question.id, el)}>
             <PreviewQuestion
               question={question}
               isSelected={selectedQuestionId === question.id}
@@ -69,4 +69,3 @@ export default function PreviewArea({
     </div>
   );
 }
-
