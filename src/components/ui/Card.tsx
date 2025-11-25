@@ -3,7 +3,7 @@
 import { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type CardVariant = "default" | "selected" | "hover";
+type CardVariant = "default" | "selected" | "hover" | "highlighted";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: CardVariant;
@@ -23,6 +23,7 @@ export default function Card({
     default: baseStyles,
     selected: cn(baseStyles, "ring-2 ring-zinc-900"),
     hover: cn(baseStyles, "cursor-pointer hover:bg-zinc-50 transition-colors"),
+    highlighted: "border border-blue-400 rounded-lg bg-blue-50/50",
   };
 
   const isInteractive = onClick !== undefined;
