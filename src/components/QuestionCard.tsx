@@ -2,6 +2,10 @@
 
 import { Question, QuestionType } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
+import {
+  getQuestionTypeLabel,
+  getRequiredLabel,
+} from "@/lib/questionUtils";
 import XIcon from "./icons/XIcon";
 import ChevronDown from "./icons/ChevronDown";
 import Button from "./ui/Button";
@@ -77,9 +81,8 @@ export default function QuestionCard({
     });
   };
 
-  const typeLabel =
-    question.type === "multipleChoice" ? "Multiple Choice" : "Freeform Text";
-  const requiredLabel = question.required ? "Required" : "Optional";
+  const typeLabel = getQuestionTypeLabel(question.type);
+  const requiredLabel = getRequiredLabel(question.required);
 
   if (!isSelected) {
     return (
@@ -118,33 +121,50 @@ export default function QuestionCard({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-900 mb-2">
+          <label
+            htmlFor={`label-${question.id}`}
+            className="block text-sm font-medium text-zinc-900 mb-2"
+          >
             Question Label
           </label>
           <Input
             type="text"
+            id={`label-${question.id}`}
             value={question.label}
             onChange={handleLabelChange}
             onFocus={onSelect}
             onClick={(e) => e.stopPropagation()}
             placeholder="Enter question text..."
+            aria-describedby={`label-${question.id}-description`}
           />
+          <span id={`label-${question.id}-description`} className="sr-only">
+            Enter the text that will be displayed for this question
+          </span>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-900 mb-2">
+          <label
+            htmlFor={`type-${question.id}`}
+            className="block text-sm font-medium text-zinc-900 mb-2"
+          >
             Question Type
           </label>
           <Input
             type="select"
+            id={`type-${question.id}`}
             value={question.type}
             onChange={handleTypeChange}
             onFocus={onSelect}
             onClick={(e) => e.stopPropagation()}
+            aria-describedby={`type-${question.id}-description`}
           >
             <option value="text">Freeform Text</option>
             <option value="multipleChoice">Multiple Choice</option>
           </Input>
+          <span id={`type-${question.id}-description`} className="sr-only">
+            Choose whether this question accepts freeform text or multiple choice
+            options
+          </span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -173,8 +193,12 @@ export default function QuestionCard({
             <div className="space-y-2">
               {question.options.map((option, index) => (
                 <div key={option.id} className="flex items-center gap-2">
+                  <label htmlFor={`option-${option.id}`} className="sr-only">
+                    Option {index + 1}
+                  </label>
                   <Input
                     type="text"
+                    id={`option-${option.id}`}
                     value={option.text}
                     onChange={(e) =>
                       handleOptionTextChange(option.id, e.target.value)
@@ -183,7 +207,14 @@ export default function QuestionCard({
                     onClick={(e) => e.stopPropagation()}
                     placeholder={`Option ${index + 1}`}
                     className="flex-1"
+                    aria-describedby={`option-${option.id}-description`}
                   />
+                  <span
+                    id={`option-${option.id}-description`}
+                    className="sr-only"
+                  >
+                    Text for option {index + 1} in this multiple choice question
+                  </span>
                   <Button
                     variant="ghost"
                     onClick={(e) => {

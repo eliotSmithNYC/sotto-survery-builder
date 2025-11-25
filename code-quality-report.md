@@ -1,4 +1,5 @@
 # Code Quality Report
+
 ## Survey Builder Application
 
 **Date:** Generated Report  
@@ -17,6 +18,7 @@ The codebase demonstrates solid React fundamentals with good TypeScript usage an
 ## 1. Component Structure & Organization
 
 ### Strengths
+
 - ✅ Clear separation of concerns with dedicated components
 - ✅ Good use of TypeScript interfaces for props
 - ✅ Logical file organization in `components/` directory
@@ -31,21 +33,25 @@ The codebase demonstrates solid React fundamentals with good TypeScript usage an
 **Location:** `src/app/page.tsx`
 
 **Recommendations:**
+
 - Extract validation error display into a `ValidationBanner` component
 - Extract mobile/desktop layout logic into separate components or a layout wrapper
 - Consider extracting state management logic into custom hooks (e.g., `useSurveyState`, `useQuestionSelection`)
 
 **Example extraction opportunity:**
+
 ```typescript
 // Current: Inline validation error display
-{validationError && (
-  <div className="px-4 py-2 bg-red-50 border-b border-red-200">
-    <p className="text-sm text-red-800">{validationError}</p>
-  </div>
-)}
+{
+  validationError && (
+    <div className="px-4 py-2 bg-red-50 border-b border-red-200">
+      <p className="text-sm text-red-800">{validationError}</p>
+    </div>
+  );
+}
 
 // Suggested: Extract to ValidationBanner component
-<ValidationBanner error={validationError} />
+<ValidationBanner error={validationError} />;
 ```
 
 #### 1.2 Duplicate Layout Logic
@@ -55,6 +61,7 @@ The codebase demonstrates solid React fundamentals with good TypeScript usage an
 **Location:** `src/app/page.tsx` (lines 157-219)
 
 **Recommendations:**
+
 - Create a `ResponsiveLayout` component that handles mobile/desktop rendering
 - Extract the sidebar overlay logic into a reusable component
 - Consider using a layout component pattern to reduce duplication
@@ -66,11 +73,13 @@ The codebase demonstrates solid React fundamentals with good TypeScript usage an
 **Location:** Multiple components
 
 **Examples:**
+
 - `QuestionCard.onTypeChange` is optional but used conditionally
 - `QuestionSidebar.onMoveUp` and `onMoveDown` are optional but should be required if questions exist
 - `PreviewArea.onSelectQuestion` is optional but used conditionally
 
 **Recommendations:**
+
 - Review prop requirements and make them required when they're always needed
 - Use proper TypeScript discriminated unions for conditional props
 - Consider splitting components if props are truly optional in different contexts
@@ -80,6 +89,7 @@ The codebase demonstrates solid React fundamentals with good TypeScript usage an
 ## 2. JSX Best Practices
 
 ### Strengths
+
 - ✅ Good use of semantic HTML elements
 - ✅ Proper key props in lists
 - ✅ Conditional rendering is clear
@@ -93,10 +103,12 @@ The codebase demonstrates solid React fundamentals with good TypeScript usage an
 **Location:** Multiple components
 
 **Examples:**
+
 - `handleLabelChange` vs `handleTypeChange` vs `onSelect` (mixed patterns)
 - Some handlers are inline, others are extracted
 
 **Recommendations:**
+
 - Standardize on `handle*` prefix for internal handlers
 - Keep `on*` prefix for props (callbacks)
 - Extract complex inline handlers to named functions
@@ -108,6 +120,7 @@ The codebase demonstrates solid React fundamentals with good TypeScript usage an
 **Location:** Multiple files
 
 **Examples:**
+
 ```typescript
 // Current pattern (repeated throughout)
 className={`border border-zinc-200 rounded-lg bg-white ${
@@ -116,15 +129,17 @@ className={`border border-zinc-200 rounded-lg bg-white ${
 ```
 
 **Recommendations:**
+
 - Use `clsx` or `cn` utility (or create a simple one) for class name composition
 - Extract common class combinations into constants or utility functions
 - Consider using Tailwind's `class-variance-authority` for variant-based styling
 
 **Suggested utility:**
+
 ```typescript
 // lib/utils.ts
 export function cn(...classes: (string | undefined | null | false)[]): string {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 ```
 
@@ -135,6 +150,7 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 **Location:** `JsonDrawer.tsx` (line 25)
 
 **Recommendations:**
+
 - Extract magic numbers to constants
 - Use Tailwind config for custom values
 - Consider CSS variables for dynamic values
@@ -146,11 +162,13 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 **Location:** Multiple components
 
 **Examples:**
+
 - Form inputs missing `aria-describedby` for error messages
 - Buttons without descriptive `aria-label` in some cases
 - Missing `aria-live` regions for dynamic content updates
 
 **Recommendations:**
+
 - Add `aria-label` to all icon-only buttons
 - Add `aria-describedby` to form inputs with validation
 - Add `aria-live="polite"` to validation error messages
@@ -161,6 +179,7 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 ## 3. Tailwind CSS Best Practices
 
 ### Strengths
+
 - ✅ Consistent color palette (zinc scale)
 - ✅ Good use of responsive utilities (`md:` breakpoints)
 - ✅ Proper use of transition utilities
@@ -174,17 +193,21 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 **Location:** Throughout the codebase
 
 **Examples:**
+
 ```typescript
 // QuestionCard.tsx line 136
-className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+className =
+  "w-full px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent";
 ```
 
 **Recommendations:**
+
 - Extract common input styles to a component or utility
 - Use Tailwind's `@apply` directive for repeated patterns (sparingly)
 - Create reusable component variants (e.g., `Input`, `Button` components)
 
 **Suggested component extraction:**
+
 ```typescript
 // components/ui/Input.tsx
 export function Input({ className, ...props }) {
@@ -209,12 +232,14 @@ export function Input({ className, ...props }) {
 **Location:** Multiple files
 
 **Common patterns found:**
+
 - Button styles (primary, secondary variants)
 - Input/textarea styles
 - Card/container styles
 - Border and spacing patterns
 
 **Recommendations:**
+
 - Create a design system with base components (`Button`, `Input`, `Card`, `Select`)
 - Use component composition to reduce duplication
 - Document common patterns in a style guide
@@ -226,6 +251,7 @@ export function Input({ className, ...props }) {
 **Location:** Multiple components
 
 **Recommendations:**
+
 - Standardize spacing scale usage
 - Create spacing constants or use a consistent pattern
 - Document spacing decisions
@@ -237,6 +263,7 @@ export function Input({ className, ...props }) {
 **Location:** `PreviewQuestion.tsx` (line 24) uses `border-blue-400 bg-blue-50/50`
 
 **Recommendations:**
+
 - Ensure all colors come from the design system
 - Use semantic color names (e.g., `primary`, `accent`) where appropriate
 - Consider dark mode support (CSS variables are defined but not used)
@@ -248,10 +275,12 @@ export function Input({ className, ...props }) {
 **Location:** Multiple files
 
 **Examples:**
+
 - Some components use `md:` breakpoints, others don't
 - Mobile-first approach is not consistently applied
 
 **Recommendations:**
+
 - Document breakpoint strategy
 - Ensure consistent mobile-first approach
 - Consider extracting responsive patterns to utilities
@@ -265,16 +294,19 @@ export function Input({ className, ...props }) {
 **High Priority Extractions:**
 
 1. **Button Component**
+
    - Multiple button variants throughout codebase
    - Extract to `components/ui/Button.tsx`
    - Variants: primary, secondary, icon-only, destructive
 
 2. **Input Component**
+
    - Repeated input styling in `QuestionCard.tsx` and `PreviewQuestion.tsx`
    - Extract to `components/ui/Input.tsx`
    - Support text, textarea, select variants
 
 3. **Card Component**
+
    - Card-like containers in multiple places
    - Extract to `components/ui/Card.tsx`
    - Support selected, hover states
@@ -288,10 +320,12 @@ export function Input({ className, ...props }) {
 **Extraction Opportunities:**
 
 1. **`useQuestionSelection`**
+
    - Logic in `page.tsx` for managing selected question (lines 29-43
    - Extract to `hooks/useQuestionSelection.ts`
 
 2. **`useValidation`**
+
    - Validation error state and timeout logic (lines 32, 49-52)
    - Extract to `hooks/useValidation.ts`
 
@@ -304,9 +338,11 @@ export function Input({ className, ...props }) {
 **Extraction Opportunities:**
 
 1. **Class name utility**
+
    - Create `lib/utils.ts` with `cn()` function for class composition
 
 2. **Question utilities**
+
    - Extract question type label logic (repeated in `QuestionCard.tsx` and `QuestionSidebar.tsx`)
    - Create `lib/questionUtils.ts` with `getQuestionTypeLabel()`, `getQuestionTypeTag()`
 
@@ -319,6 +355,7 @@ export function Input({ className, ...props }) {
 **Extraction Opportunities:**
 
 1. **`ResponsiveLayout`**
+
    - Extract mobile/desktop layout logic from `page.tsx`
    - Handle sidebar, tabs, and content areas
 
@@ -331,6 +368,7 @@ export function Input({ className, ...props }) {
 ## 5. Type Safety & TypeScript
 
 ### Strengths
+
 - ✅ Good use of TypeScript interfaces
 - ✅ Proper typing of reducer actions
 - ✅ Type-safe props throughout
@@ -344,13 +382,15 @@ export function Input({ className, ...props }) {
 **Location:** `types.ts`
 
 **Examples:**
+
 - `SurveyResponse` uses `Record<string, string>` but could be more specific
 - Question ID could be a branded type for better type safety
 
 **Recommendations:**
+
 ```typescript
 // More specific typing
-export type QuestionId = string & { readonly __brand: 'QuestionId' };
+export type QuestionId = string & { readonly __brand: "QuestionId" };
 export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ```
 
@@ -359,6 +399,7 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 **Issue:** `QuestionType` could benefit from discriminated union pattern.
 
 **Recommendations:**
+
 - Consider using discriminated unions for better type narrowing
 - This would make `options` handling more type-safe
 
@@ -367,6 +408,7 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ## 6. State Management
 
 ### Strengths
+
 - ✅ Good use of `useReducer` for complex state
 - ✅ Proper separation of concerns
 
@@ -379,6 +421,7 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 **Location:** `questionsReducer.ts` (lines 144-147)
 
 **Recommendations:**
+
 - Use fixed IDs for initial questions, or
 - Generate IDs once and store them
 - Consider using a seed or deterministic ID generation for initial state
@@ -388,6 +431,7 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 **Issue:** Reducer is pure, but some side effects (like validation) happen outside.
 
 **Recommendations:**
+
 - Consider using `useEffect` to sync validation state
 - Or move validation into reducer actions
 
@@ -404,11 +448,13 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 **Location:** Multiple components
 
 **Examples:**
+
 - `validSelectedQuestionId` in `page.tsx` is memoized (good!)
 - But many callback functions are recreated on each render
 - `QuestionCard` could benefit from `React.memo`
 
 **Recommendations:**
+
 - Use `useCallback` for event handlers passed to children
 - Use `React.memo` for components that receive stable props
 - Consider memoizing computed values in `QuestionSidebar`
@@ -420,6 +466,7 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 **Location:** `QuestionSidebar.tsx`, `BuilderArea.tsx`
 
 **Recommendations:**
+
 - Consider `react-window` or `react-virtual` if question lists grow large
 - Add pagination or lazy loading if needed
 
@@ -428,6 +475,7 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 **Issue:** Parent component re-renders cause all children to re-render.
 
 **Recommendations:**
+
 - Split state more granularly
 - Use context for deeply nested props
 - Consider state management library if complexity grows
@@ -439,14 +487,17 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ### Issues Found
 
 1. **Missing ARIA labels:**
+
    - Icon buttons need descriptive labels
    - Form inputs need associated labels (some use `htmlFor`, good!)
 
 2. **Keyboard Navigation:**
+
    - Sidebar overlay should trap focus
    - Drawer should manage focus on open/close
 
 3. **Screen Reader Support:**
+
    - Validation errors should be announced
    - Dynamic content updates need `aria-live` regions
 
@@ -455,6 +506,7 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
    - Ensure focus indicators are visible
 
 **Recommendations:**
+
 - Add comprehensive ARIA attributes
 - Test with screen readers
 - Add keyboard navigation tests
@@ -467,16 +519,19 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ### Identified Duplications
 
 1. **Question Type Labels:**
+
    - `QuestionCard.tsx` line 77-78
    - `QuestionSidebar.tsx` line 54-55
    - Extract to utility function
 
 2. **Empty State Components:**
+
    - `BuilderArea.tsx` lines 27-39
    - `PreviewArea.tsx` lines 42-51
    - Extract to `EmptyState` component
 
 3. **Button Styles:**
+
    - Primary buttons repeated throughout
    - Secondary buttons repeated
    - Extract to `Button` component
@@ -491,16 +546,19 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ## 10. Error Handling
 
 ### Current State
+
 - ✅ Basic validation error display
 - ✅ Timeout for error messages
 
 ### Areas for Improvement
 
 1. **Error Boundaries:**
+
    - No React error boundaries implemented
    - Add error boundary for component tree
 
 2. **Error Types:**
+
    - Single error state for all errors
    - Consider typed error system
 
@@ -514,16 +572,19 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ## 11. Testing Readiness
 
 ### Current State
+
 - No test files found in codebase
 
 ### Recommendations
 
 1. **Component Testing:**
+
    - Add unit tests for reducer logic
    - Add component tests for critical paths
    - Test validation logic
 
 2. **Integration Testing:**
+
    - Test question creation flow
    - Test question editing flow
    - Test responsive behavior
@@ -537,17 +598,20 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ## 12. Documentation
 
 ### Current State
+
 - Minimal inline documentation
 - No JSDoc comments
 
 ### Recommendations
 
 1. **Component Documentation:**
+
    - Add JSDoc to exported components
    - Document prop interfaces
    - Add usage examples
 
 2. **Code Comments:**
+
    - Add comments for complex logic (e.g., reducer actions)
    - Document non-obvious design decisions
 
@@ -563,14 +627,17 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ### Missing Features
 
 1. **Error Monitoring:**
+
    - No error tracking (e.g., Sentry)
    - No analytics
 
 2. **Performance Monitoring:**
+
    - No performance metrics
    - No bundle size analysis
 
 3. **Security:**
+
    - No input sanitization visible
    - Consider XSS protection for user input
 
@@ -584,13 +651,15 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 ## Priority Recommendations
 
 ### High Priority
-1. ✅ Extract reusable UI components (`Button`, `Input`, `Card`)
-2. ✅ Add class name utility function (`cn`)
-3. ✅ Improve accessibility (ARIA labels, keyboard navigation)
-4. ✅ Extract common question utilities
-5. ✅ Add error boundaries
+
+1. ✅ **COMPLETED** - Extract reusable UI components (`Button`, `Input`, `Card`)
+2. ✅ **COMPLETED** - Add class name utility function (`cn`)
+3. ✅ **VERIFIED** - Zero React errors (build passes, all keys present)
+4. ⏳ **IN PROGRESS** - Improve accessibility (ARIA labels, keyboard navigation)
+5. ⏳ **IN PROGRESS** - Extract common question utilities
 
 ### Medium Priority
+
 1. ✅ Create custom hooks for state management
 2. ✅ Extract layout components
 3. ✅ Add memoization for performance
@@ -598,6 +667,7 @@ export type SurveyResponse = Partial<Record<QuestionId, string>>;
 5. ✅ Add comprehensive TypeScript types
 
 ### Low Priority
+
 1. ✅ Add testing infrastructure
 2. ✅ Add documentation
 3. ✅ Consider state management library
@@ -623,4 +693,3 @@ With these improvements, the codebase will be more maintainable, performant, and
 **Report Generated:** Comprehensive code quality analysis  
 **Files Analyzed:** 20 source files  
 **Lines of Code Reviewed:** ~1,500+ lines
-

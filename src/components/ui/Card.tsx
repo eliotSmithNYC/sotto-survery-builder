@@ -14,6 +14,7 @@ export default function Card({
   variant = "default",
   className,
   children,
+  onClick,
   ...props
 }: CardProps) {
   const baseStyles = "border border-zinc-200 rounded-lg bg-white";
@@ -24,13 +25,17 @@ export default function Card({
     hover: cn(baseStyles, "cursor-pointer hover:bg-zinc-50 transition-colors"),
   };
 
+  const isInteractive = onClick !== undefined;
+
   return (
     <div
       className={cn(variantStyles[variant], className)}
+      onClick={onClick}
+      role={isInteractive ? "button" : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
       {...props}
     >
       {children}
     </div>
   );
 }
-

@@ -111,7 +111,11 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-zinc-50">
       <Header onToggleSidebar={handleToggleSidebar} />
       {validationError && (
-        <div className="px-4 py-2 bg-red-50 border-b border-red-200">
+        <div
+          className="px-4 py-2 bg-red-50 border-b border-red-200"
+          role="alert"
+          aria-live="polite"
+        >
           <p className="text-sm text-red-800">{validationError}</p>
         </div>
       )}
@@ -130,6 +134,14 @@ export default function Home() {
           <div
             className="md:hidden fixed inset-0 bg-black/50 z-40"
             onClick={handleCloseSidebar}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                handleCloseSidebar();
+              }
+            }}
+            role="button"
+            tabIndex={-1}
+            aria-label="Close sidebar"
           />
         )}
 

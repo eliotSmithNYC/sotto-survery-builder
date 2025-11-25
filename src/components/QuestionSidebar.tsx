@@ -1,6 +1,7 @@
 "use client";
 
 import { Question } from "@/lib/types";
+import { getQuestionTypeTag } from "@/lib/questionUtils";
 import ChevronUp from "./icons/ChevronUp";
 import ChevronDown from "./icons/ChevronDown";
 import Button from "./ui/Button";
@@ -52,8 +53,7 @@ export default function QuestionSidebar({
             <ul className="space-y-1">
               {questions.map((question, index) => {
                 const isSelected = selectedQuestionId === question.id;
-                const typeTag =
-                  question.type === "multipleChoice" ? "MC" : "Text";
+                const typeTag = getQuestionTypeTag(question.type);
                 const canMoveUp = index > 0;
                 const canMoveDown = index < questions.length - 1;
                 return (
