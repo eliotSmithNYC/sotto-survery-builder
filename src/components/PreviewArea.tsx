@@ -53,7 +53,7 @@ export default function PreviewArea({
 
   return (
     <div className="p-4 md:p-6">
-      <div className="space-y-6 max-w-[560px] mx-auto">
+      <div className="space-y-4 max-w-[560px] mx-auto">
         {questions.map((question) => (
           <div key={question.id} ref={(el) => setQuestionRef(question.id, el)}>
             <PreviewQuestion

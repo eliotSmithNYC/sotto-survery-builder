@@ -84,7 +84,7 @@ export default function QuestionCard({
         className="border border-zinc-200 rounded-lg bg-white cursor-pointer hover:bg-zinc-50 transition-colors"
         onClick={onSelect}
       >
-        <div className="p-3 flex items-center justify-between">
+        <div className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <span className="text-sm text-zinc-900 truncate">
               {question.label || "Untitled question"}
@@ -110,8 +110,7 @@ export default function QuestionCard({
       onClick={onSelect}
     >
       <div className="p-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex-1"></div>
+        <div className="flex items-center justify-end">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -124,7 +123,7 @@ export default function QuestionCard({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-900 mb-1">
+          <label className="block text-sm font-medium text-zinc-900 mb-2">
             Question Label
           </label>
           <input
@@ -139,7 +138,7 @@ export default function QuestionCard({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-900 mb-1">
+          <label className="block text-sm font-medium text-zinc-900 mb-2">
             Question Type
           </label>
           <select
@@ -208,7 +207,7 @@ export default function QuestionCard({
                   e.stopPropagation();
                   handleAddOption();
                 }}
-                className="w-full text-left px-3 py-2 text-sm text-zinc-900 hover:text-green-600 hover:bg-zinc-50 border border-zinc-300 rounded-md transition-colors"
+                className="text-left px-3 py-2 text-sm text-zinc-900 hover:text-green-600 hover:bg-zinc-50 border border-zinc-300 rounded-md transition-colors"
                 aria-label="Add option"
                 type="button"
               >

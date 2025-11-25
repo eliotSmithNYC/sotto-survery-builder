@@ -19,7 +19,7 @@ export default function PreviewQuestion({
 }: PreviewQuestionProps) {
   return (
     <div
-      className={`border rounded-lg p-4 md:p-6 transition-colors ${
+      className={`border rounded-lg p-4 transition-colors ${
         isSelected
           ? "border-blue-400 bg-blue-50/50"
           : "border-zinc-200 bg-white"
