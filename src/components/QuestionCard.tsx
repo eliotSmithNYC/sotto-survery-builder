@@ -11,6 +11,7 @@ interface QuestionCardProps {
   dispatch: React.Dispatch<QuestionAction>;
   onSelect: () => void;
   onDelete: () => void;
+  onTypeChange?: (questionId: string) => void;
 }
 
 export default function QuestionCard({
@@ -19,6 +20,7 @@ export default function QuestionCard({
   dispatch,
   onSelect,
   onDelete,
+  onTypeChange,
 }: QuestionCardProps) {
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -29,10 +31,14 @@ export default function QuestionCard({
   };
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newType = e.target.value as QuestionType;
+    if (newType !== question.type) {
+      onTypeChange?.(question.id);
+    }
     dispatch({
       type: "changeType",
       id: question.id,
-      newType: e.target.value as QuestionType,
+      newType,
     });
   };
 

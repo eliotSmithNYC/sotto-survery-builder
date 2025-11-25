@@ -60,6 +60,14 @@ export function questionsReducer(
           };
         }
 
+        if (action.newType === "text") {
+          return {
+            ...q,
+            type: action.newType,
+            options: [],
+          };
+        }
+
         return {
           ...q,
           type: action.newType,

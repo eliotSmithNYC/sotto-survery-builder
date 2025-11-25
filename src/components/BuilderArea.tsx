@@ -11,6 +11,7 @@ interface BuilderAreaProps {
   onSelectQuestion: (questionId: string) => void;
   onDeleteQuestion: (questionId: string) => void;
   onAddQuestion: () => void;
+  onTypeChange?: (questionId: string) => void;
 }
 
 export default function BuilderArea({
@@ -20,6 +21,7 @@ export default function BuilderArea({
   onSelectQuestion,
   onDeleteQuestion,
   onAddQuestion,
+  onTypeChange,
 }: BuilderAreaProps) {
   if (questions.length === 0) {
     return (
@@ -48,6 +50,7 @@ export default function BuilderArea({
             dispatch={dispatch}
             onSelect={() => onSelectQuestion(question.id)}
             onDelete={() => onDeleteQuestion(question.id)}
+            onTypeChange={onTypeChange}
           />
         ))}
         <button

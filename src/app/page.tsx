@@ -99,6 +99,14 @@ export default function Home() {
     }));
   };
 
+  const handleTypeChange = (questionId: string) => {
+    setResponses((prev) => {
+      const updated = { ...prev };
+      delete updated[questionId];
+      return updated;
+    });
+  };
+
   return (
     <div className="flex flex-col h-screen bg-zinc-50">
       <Header onToggleSidebar={handleToggleSidebar} />
@@ -159,6 +167,7 @@ export default function Home() {
                 onSelectQuestion={handleSelectQuestion}
                 onDeleteQuestion={handleDeleteQuestion}
                 onAddQuestion={handleAddQuestion}
+                onTypeChange={handleTypeChange}
               />
             )}
             {activeTab === "preview" && (
@@ -185,6 +194,7 @@ export default function Home() {
                 onSelectQuestion={handleSelectQuestion}
                 onDeleteQuestion={handleDeleteQuestion}
                 onAddQuestion={handleAddQuestion}
+                onTypeChange={handleTypeChange}
               />
             </div>
             <div className="flex-1 overflow-y-auto bg-white">
