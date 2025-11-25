@@ -13,6 +13,7 @@ import {
   createInitialQuestions,
 } from "@/lib/questionsReducer";
 import { SurveyResponse } from "@/lib/types";
+import { isQuestionValid } from "@/lib/validation";
 
 type Tab = "build" | "preview" | "json";
 
@@ -28,6 +29,7 @@ export default function Home() {
   const [selectedQuestionId, setSelectedQuestionId] = useState<
     string | undefined
   >(questions.length > 0 ? questions[0].id : undefined);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const validSelectedQuestionId = useMemo(() => {
     if (questions.length === 0) {
@@ -41,6 +43,17 @@ export default function Home() {
   }, [questions, selectedQuestionId]);
 
   const handleAddQuestion = () => {
+    if (questions.length > 0) {
+      const lastQuestion = questions[questions.length - 1];
+      if (!isQuestionValid(lastQuestion)) {
+        setValidationError(
+          "Please fill in all fields for the current question before adding a new one."
+        );
+        setTimeout(() => setValidationError(null), 3000);
+        return;
+      }
+    }
+    setValidationError(null);
     const newQuestionId = crypto.randomUUID();
     dispatch({ type: "addQuestion", questionId: newQuestionId });
     setSelectedQuestionId(newQuestionId);
@@ -84,6 +97,11 @@ export default function Home() {
         onAddQuestion={handleAddQuestion}
         onToggleSidebar={handleToggleSidebar}
       />
+      {validationError && (
+        <div className="px-4 py-2 bg-red-50 border-b border-red-200">
+          <p className="text-sm text-red-800">{validationError}</p>
+        </div>
+      )}
 
       <div className="md:hidden">
         <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
