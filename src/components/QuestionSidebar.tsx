@@ -39,8 +39,8 @@ export default function QuestionSidebar({
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex-1 overflow-y-auto">
+    <div className="h-full flex flex-col w-full overflow-hidden">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
         <div className="p-4">
           <h2 className="text-sm font-semibold text-zinc-900 mb-3">
             Questions
@@ -60,28 +60,28 @@ export default function QuestionSidebar({
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleQuestionClick(question.id)}
-                        className={`flex-1 text-left px-3 py-2 rounded-md text-sm transition-colors relative ${
+                        className={`flex-1 text-left px-3 py-2 rounded-md text-sm transition-colors relative min-w-0 ${
                           isSelected
                             ? "bg-zinc-100 text-zinc-900 border-l-2 border-zinc-900"
                             : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
                         }`}
                       >
-                        <div className="flex items-center gap-2">
-                          <span className="text-zinc-400 font-mono text-xs">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-zinc-400 font-mono text-xs flex-shrink-0">
                             {index + 1}
                           </span>
                           <span
-                            className={`flex-1 truncate ${
+                            className={`flex-1 truncate min-w-0 ${
                               isSelected ? "font-semibold" : ""
                             }`}
                           >
                             {question.label || "Untitled question"}
                           </span>
-                          <span className="text-xs px-1.5 py-0.5 bg-zinc-200 text-zinc-700 rounded font-mono">
+                          <span className="text-xs px-1.5 py-0.5 bg-zinc-200 text-zinc-700 rounded font-mono flex-shrink-0">
                             {typeTag}
                           </span>
                           {question.required && (
-                            <span className="text-red-600 text-xs font-semibold">
+                            <span className="text-red-600 text-xs font-semibold flex-shrink-0">
                               *
                             </span>
                           )}
