@@ -2,26 +2,18 @@
 
 import { Question, QuestionType } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
-import ChevronDown from "./icons/ChevronDown";
-import ChevronUp from "./icons/ChevronUp";
 import XIcon from "./icons/XIcon";
 
 interface QuestionCardProps {
   question: Question;
-  isExpanded: boolean;
   isSelected: boolean;
-  onExpand: () => void;
-  onCollapse: () => void;
   dispatch: React.Dispatch<QuestionAction>;
   onDelete: () => void;
 }
 
 export default function QuestionCard({
   question,
-  isExpanded,
   isSelected,
-  onExpand,
-  onCollapse,
   dispatch,
   onDelete,
 }: QuestionCardProps) {
@@ -73,34 +65,6 @@ export default function QuestionCard({
     });
   };
 
-  if (!isExpanded) {
-    return (
-      <div
-        className={`border border-zinc-200 rounded-lg bg-white ${
-          isSelected ? "ring-2 ring-zinc-900" : ""
-        }`}
-      >
-        <button
-          onClick={onExpand}
-          className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-zinc-50 transition-colors rounded-lg"
-        >
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            <span className="text-sm text-zinc-500 font-mono">
-              {question.type === "text" ? "T" : "MC"}
-            </span>
-            <span className="text-sm text-zinc-900 truncate flex-1">
-              {question.label || "Untitled question"}
-            </span>
-            {question.required && (
-              <span className="text-zinc-500 text-xs">*</span>
-            )}
-          </div>
-          <ChevronDown className="w-5 h-5 text-zinc-400 flex-shrink-0" />
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div
       className={`border border-zinc-200 rounded-lg bg-white ${
@@ -108,13 +72,7 @@ export default function QuestionCard({
       }`}
     >
       <div className="p-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={onCollapse}
-            className="text-zinc-600 hover:text-zinc-900 transition-colors"
-          >
-            <ChevronUp className="w-5 h-5" />
-          </button>
+        <div className="flex items-center justify-end">
           <button
             onClick={onDelete}
             className="text-sm text-red-600 hover:text-red-700 transition-colors"

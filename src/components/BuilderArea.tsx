@@ -3,13 +3,11 @@
 import { Question } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
 import QuestionCard from "./QuestionCard";
-import { useState } from "react";
 
 interface BuilderAreaProps {
   questions: Question[];
   selectedQuestionId?: string;
   dispatch: React.Dispatch<QuestionAction>;
-  onSelectQuestion: (questionId: string) => void;
   onDeleteQuestion: (questionId: string) => void;
 }
 
@@ -17,29 +15,8 @@ export default function BuilderArea({
   questions,
   selectedQuestionId,
   dispatch,
-  onSelectQuestion,
   onDeleteQuestion,
 }: BuilderAreaProps) {
-  const [expandedQuestionId, setExpandedQuestionId] = useState<
-    string | undefined
-  >(selectedQuestionId);
-
-  const handleExpand = (questionId: string) => {
-    setExpandedQuestionId(questionId);
-    onSelectQuestion(questionId);
-  };
-
-  const handleCollapse = () => {
-    setExpandedQuestionId(undefined);
-  };
-
-  const handleDelete = (questionId: string) => {
-    if (expandedQuestionId === questionId) {
-      setExpandedQuestionId(undefined);
-    }
-    onDeleteQuestion(questionId);
-  };
-
   if (questions.length === 0) {
     return (
       <div className="p-4 md:p-6">
@@ -60,12 +37,9 @@ export default function BuilderArea({
           <QuestionCard
             key={question.id}
             question={question}
-            isExpanded={expandedQuestionId === question.id}
             isSelected={selectedQuestionId === question.id}
-            onExpand={() => handleExpand(question.id)}
-            onCollapse={handleCollapse}
             dispatch={dispatch}
-            onDelete={() => handleDelete(question.id)}
+            onDelete={() => onDeleteQuestion(question.id)}
           />
         ))}
       </div>
