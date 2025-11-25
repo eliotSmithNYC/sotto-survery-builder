@@ -17,7 +17,9 @@ export interface SurveyDefinition {
   questions: Question[];
 }
 
-// questionId -> value (for now always string)
-export type SurveyResponse = Record<string, string>;
+export type MultipleChoiceResponse = {
+  optionId: string;
+  optionText: string;
+};
 
-
+export type SurveyResponse = Record<string, string | MultipleChoiceResponse>;

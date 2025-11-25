@@ -1,7 +1,6 @@
 "use client";
 
-import { Question } from "@/lib/types";
-import { SurveyResponse } from "@/lib/types";
+import { Question, SurveyResponse, MultipleChoiceResponse } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
 import QuestionSidebar from "./QuestionSidebar";
 import BuilderArea from "./BuilderArea";
@@ -19,7 +18,10 @@ interface DesktopLayoutProps {
   onDeleteQuestion: (questionId: string) => void;
   onTypeChange?: (questionId: string) => void;
   responses: SurveyResponse;
-  onResponseChange: (questionId: string, value: string) => void;
+  onResponseChange: (
+    questionId: string,
+    value: string | MultipleChoiceResponse
+  ) => void;
   isJsonDrawerOpen: boolean;
   onToggleJsonDrawer: () => void;
 }

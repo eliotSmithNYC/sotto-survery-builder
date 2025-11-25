@@ -1,7 +1,6 @@
 "use client";
 
-import { Question } from "@/lib/types";
-import { SurveyResponse } from "@/lib/types";
+import { Question, SurveyResponse, MultipleChoiceResponse } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
 import Tabs from "./Tabs";
 import QuestionSidebar from "./QuestionSidebar";
@@ -26,7 +25,10 @@ interface MobileLayoutProps {
   onDeleteQuestion: (questionId: string) => void;
   onTypeChange?: (questionId: string) => void;
   responses: SurveyResponse;
-  onResponseChange: (questionId: string, value: string) => void;
+  onResponseChange: (
+    questionId: string,
+    value: string | MultipleChoiceResponse
+  ) => void;
 }
 
 export default function MobileLayout({
@@ -115,4 +117,3 @@ export default function MobileLayout({
     </>
   );
 }
-

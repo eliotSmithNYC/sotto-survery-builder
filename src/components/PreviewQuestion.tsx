@@ -1,6 +1,6 @@
 "use client";
 
-import { Question } from "@/lib/types";
+import { Question, MultipleChoiceResponse, SurveyResponse } from "@/lib/types";
 import Input from "./ui/Input";
 import Card from "./ui/Card";
 import { cn } from "@/lib/utils";
@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 interface PreviewQuestionProps {
   question: Question;
   isSelected: boolean;
-  value: string;
-  onChange: (value: string) => void;
+  value: string | MultipleChoiceResponse | undefined;
+  onChange: (value: string | MultipleChoiceResponse) => void;
   onFocus?: () => void;
 }
 
@@ -42,7 +42,7 @@ export default function PreviewQuestion({
       {question.type === "text" ? (
         <Input
           type="textarea"
-          value={value}
+          value={typeof value === "string" ? value : ""}
           onChange={(e) => onChange(e.target.value)}
           onFocus={onFocus}
           placeholder="Type your answer here..."
@@ -50,25 +50,37 @@ export default function PreviewQuestion({
         />
       ) : (
         <div className="space-y-2">
-          {question.options.map((option) => (
-            <label
-              key={option.id}
-              className="flex items-center gap-2 cursor-pointer hover:bg-zinc-50 p-2 rounded-md -ml-2"
-            >
-              <input
-                type="radio"
-                name={`question-${question.id}`}
-                value={option.id}
-                checked={value === option.id}
-                onChange={(e) => onChange(e.target.value)}
-                onFocus={onFocus}
-                className="w-4 h-4 text-zinc-900 border-zinc-300 focus:ring-zinc-900"
-              />
-              <span className="text-sm text-zinc-900">
-                {option.text || "Untitled option"}
-              </span>
-            </label>
-          ))}
+          {question.options.map((option) => {
+            const isSelected =
+              typeof value === "object" &&
+              value !== null &&
+              "optionId" in value &&
+              value.optionId === option.id;
+            return (
+              <label
+                key={option.id}
+                className="flex items-center gap-2 cursor-pointer hover:bg-zinc-50 p-2 rounded-md -ml-2"
+              >
+                <input
+                  type="radio"
+                  name={`question-${question.id}`}
+                  value={option.id}
+                  checked={isSelected}
+                  onChange={() =>
+                    onChange({
+                      optionId: option.id,
+                      optionText: option.text,
+                    })
+                  }
+                  onFocus={onFocus}
+                  className="w-4 h-4 text-zinc-900 border-zinc-300 focus:ring-zinc-900"
+                />
+                <span className="text-sm text-zinc-900">
+                  {option.text || "Untitled option"}
+                </span>
+              </label>
+            );
+          })}
         </div>
       )}
     </Card>

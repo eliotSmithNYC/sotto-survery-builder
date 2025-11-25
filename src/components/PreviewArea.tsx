@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Question } from "@/lib/types";
-import { SurveyResponse } from "@/lib/types";
+import { Question, SurveyResponse, MultipleChoiceResponse } from "@/lib/types";
 import PreviewQuestion from "./PreviewQuestion";
 
 interface PreviewAreaProps {
   questions: Question[];
   selectedQuestionId?: string;
   responses: SurveyResponse;
-  onResponseChange: (questionId: string, value: string) => void;
+  onResponseChange: (
+    questionId: string,
+    value: string | MultipleChoiceResponse
+  ) => void;
   onSelectQuestion?: (questionId: string) => void;
 }
 
@@ -59,7 +61,7 @@ export default function PreviewArea({
             <PreviewQuestion
               question={question}
               isSelected={selectedQuestionId === question.id}
-              value={responses[question.id] || ""}
+              value={responses[question.id]}
               onChange={(value) => onResponseChange(question.id, value)}
               onFocus={() => onSelectQuestion?.(question.id)}
             />

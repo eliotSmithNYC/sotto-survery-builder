@@ -8,7 +8,7 @@ import {
   questionsReducer,
   createInitialQuestions,
 } from "@/lib/questionsReducer";
-import { SurveyResponse } from "@/lib/types";
+import { SurveyResponse, MultipleChoiceResponse } from "@/lib/types";
 import { isQuestionValid } from "@/lib/validation";
 
 type Tab = "build" | "preview" | "json";
@@ -88,7 +88,10 @@ export default function Home() {
     dispatch({ type: "moveDown", id: questionId });
   };
 
-  const handleResponseChange = (questionId: string, value: string) => {
+  const handleResponseChange = (
+    questionId: string,
+    value: string | MultipleChoiceResponse
+  ) => {
     setResponses((prev) => ({
       ...prev,
       [questionId]: value,
