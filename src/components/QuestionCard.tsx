@@ -174,7 +174,9 @@ export default function QuestionCard({
               </label>
               <button
                 onClick={handleAddOption}
-                className="text-sm text-zinc-900 hover:text-zinc-700 transition-colors"
+                className="text-sm text-zinc-900 hover:text-green-600 transition-colors"
+                aria-label="Add option"
+                type="button"
               >
                 + Add option
               </button>
