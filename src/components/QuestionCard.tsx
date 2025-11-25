@@ -2,6 +2,9 @@
 
 import { Question, QuestionType } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
+import ChevronDown from "./icons/ChevronDown";
+import ChevronUp from "./icons/ChevronUp";
+import XIcon from "./icons/XIcon";
 
 interface QuestionCardProps {
   question: Question;
@@ -92,19 +95,7 @@ export default function QuestionCard({
               <span className="text-zinc-500 text-xs">*</span>
             )}
           </div>
-          <svg
-            className="w-5 h-5 text-zinc-400 flex-shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+          <ChevronDown className="w-5 h-5 text-zinc-400 flex-shrink-0" />
         </button>
       </div>
     );
@@ -122,19 +113,7 @@ export default function QuestionCard({
             onClick={onCollapse}
             className="text-zinc-600 hover:text-zinc-900 transition-colors"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 15l7-7 7 7"
-              />
-            </svg>
+            <ChevronUp className="w-5 h-5" />
           </button>
           <button
             onClick={onDelete}
@@ -164,7 +143,7 @@ export default function QuestionCard({
           <select
             value={question.type}
             onChange={handleTypeChange}
-            className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+            className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
           >
             <option value="text">Freeform Text</option>
             <option value="multipleChoice">Multiple Choice</option>
@@ -217,19 +196,7 @@ export default function QuestionCard({
                     className="p-2 text-zinc-600 hover:text-red-600 transition-colors"
                     aria-label="Remove option"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    <XIcon className="w-5 h-5" />
                   </button>
                 </div>
               ))}
