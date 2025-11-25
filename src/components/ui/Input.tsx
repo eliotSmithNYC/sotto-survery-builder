@@ -7,26 +7,25 @@ import {
 } from "react";
 import { cn } from "@/lib/utils";
 
-type InputType = "text" | "textarea" | "select";
-
-interface BaseInputProps {
-  type: InputType;
-  className?: string;
-}
-
-type InputProps = BaseInputProps &
-  (
-    | (InputHTMLAttributes<HTMLInputElement> & { type: "text" })
-    | (TextareaHTMLAttributes<HTMLTextAreaElement> & { type: "textarea" })
-    | (SelectHTMLAttributes<HTMLSelectElement> & { type: "select"; children: React.ReactNode })
-  );
+type InputProps =
+  | (InputHTMLAttributes<HTMLInputElement> & { type: "text" })
+  | (TextareaHTMLAttributes<HTMLTextAreaElement> & { type: "textarea" })
+  | (SelectHTMLAttributes<HTMLSelectElement> & {
+      type: "select";
+      children: React.ReactNode;
+    });
 
 const baseStyles =
   "w-full px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent";
 
-export default function Input({ type, className, ...props }: InputProps) {
+export default function Input(props: InputProps) {
+  const { type, className, ...restProps } = props;
+
   if (type === "textarea") {
-    const { type: _, ...textareaProps } = props as TextareaHTMLAttributes<HTMLTextAreaElement>;
+    const textareaProps = restProps as Omit<
+      TextareaHTMLAttributes<HTMLTextAreaElement>,
+      "type"
+    >;
     return (
       <textarea
         className={cn(baseStyles, "resize-y", className)}
@@ -36,24 +35,22 @@ export default function Input({ type, className, ...props }: InputProps) {
   }
 
   if (type === "select") {
-    const { type: _, children, ...selectProps } = props as SelectHTMLAttributes<HTMLSelectElement> & { children: React.ReactNode };
+    const { children, ...selectProps } = restProps as Omit<
+      SelectHTMLAttributes<HTMLSelectElement>,
+      "type"
+    > & { children: React.ReactNode };
     return (
-      <select
-        className={cn(baseStyles, className)}
-        {...selectProps}
-      >
+      <select className={cn(baseStyles, className)} {...selectProps}>
         {children}
       </select>
     );
   }
 
-  const { type: _, ...inputProps } = props as InputHTMLAttributes<HTMLInputElement>;
+  const inputProps = restProps as Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    "type"
+  >;
   return (
-    <input
-      type="text"
-      className={cn(baseStyles, className)}
-      {...inputProps}
-    />
+    <input type="text" className={cn(baseStyles, className)} {...inputProps} />
   );
 }
-
