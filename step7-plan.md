@@ -370,3 +370,4 @@ const [activeTab, setActiveTab] = useState<"definition" | "responses">("definiti
 - No need for JSON validation or error handling (we control the data structure)
 - Optional: Could add syntax highlighting library later, but not required for Step 7
 
+

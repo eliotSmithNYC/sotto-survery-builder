@@ -20,3 +20,4 @@ export interface SurveyDefinition {
 // questionId -> value (for now always string)
 export type SurveyResponse = Record<string, string>;
 
+
