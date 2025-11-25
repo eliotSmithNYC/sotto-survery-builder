@@ -3,12 +3,10 @@
 import MenuIcon from "./icons/MenuIcon";
 
 interface HeaderProps {
-  onAddQuestion?: () => void;
   onToggleSidebar?: () => void;
 }
 
 export default function Header({
-  onAddQuestion,
   onToggleSidebar,
 }: HeaderProps) {
   return (
@@ -26,12 +24,6 @@ export default function Header({
             Survey Builder
           </h1>
         </div>
-        <button
-          onClick={onAddQuestion}
-          className="px-4 py-2 text-sm font-medium text-white bg-zinc-900 rounded-md hover:bg-zinc-800 transition-colors"
-        >
-          Add question
-        </button>
       </div>
     </header>
   );

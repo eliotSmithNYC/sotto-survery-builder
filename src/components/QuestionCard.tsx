@@ -3,6 +3,7 @@
 import { Question, QuestionType } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
 import XIcon from "./icons/XIcon";
+import ChevronDown from "./icons/ChevronDown";
 
 interface QuestionCardProps {
   question: Question;
@@ -67,6 +68,34 @@ export default function QuestionCard({
     });
   };
 
+  const typeLabel =
+    question.type === "multipleChoice" ? "Multiple Choice" : "Freeform Text";
+  const requiredLabel = question.required ? "Required" : "Optional";
+
+  if (!isSelected) {
+    return (
+      <div
+        className="border border-zinc-200 rounded-lg bg-white cursor-pointer hover:bg-zinc-50 transition-colors"
+        onClick={onSelect}
+      >
+        <div className="p-3 flex items-center justify-between">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <span className="text-sm text-zinc-900 truncate">
+              {question.label || "Untitled question"}
+            </span>
+            <span className="text-xs text-zinc-500 whitespace-nowrap">
+              {typeLabel}
+            </span>
+            <span className="text-xs text-zinc-500 whitespace-nowrap">
+              {requiredLabel}
+            </span>
+          </div>
+          <ChevronDown className="w-4 h-4 text-zinc-400 flex-shrink-0" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`border border-zinc-200 rounded-lg bg-white ${
@@ -75,7 +104,8 @@ export default function QuestionCard({
       onClick={onSelect}
     >
       <div className="p-4 space-y-4">
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-between">
+          <div className="flex-1"></div>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -138,22 +168,9 @@ export default function QuestionCard({
 
         {question.type === "multipleChoice" && (
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-medium text-zinc-900">
-                Options
-              </label>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddOption();
-                }}
-                className="text-sm text-zinc-900 hover:text-green-600 transition-colors"
-                aria-label="Add option"
-                type="button"
-              >
-                + Add option
-              </button>
-            </div>
+            <label className="block text-sm font-medium text-zinc-900 mb-2">
+              Options
+            </label>
             <div className="space-y-2">
               {question.options.map((option, index) => (
                 <div key={option.id} className="flex items-center gap-2">
@@ -180,6 +197,17 @@ export default function QuestionCard({
                   </button>
                 </div>
               ))}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddOption();
+                }}
+                className="w-full text-left px-3 py-2 text-sm text-zinc-900 hover:text-green-600 hover:bg-zinc-50 border border-zinc-300 rounded-md transition-colors"
+                aria-label="Add option"
+                type="button"
+              >
+                + Add option
+              </button>
             </div>
           </div>
         )}

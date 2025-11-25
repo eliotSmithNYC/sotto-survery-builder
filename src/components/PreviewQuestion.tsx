@@ -19,8 +19,10 @@ export default function PreviewQuestion({
 }: PreviewQuestionProps) {
   return (
     <div
-      className={`border border-zinc-200 rounded-lg bg-white p-4 md:p-6 ${
-        isSelected ? "ring-2 ring-zinc-900" : ""
+      className={`border rounded-lg p-4 md:p-6 transition-colors ${
+        isSelected
+          ? "border-blue-400 bg-blue-50/50"
+          : "border-zinc-200 bg-white"
       }`}
     >
       <label className="block text-sm font-medium text-zinc-900 mb-3">

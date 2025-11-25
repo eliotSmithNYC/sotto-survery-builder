@@ -50,7 +50,7 @@ export default function PreviewArea({
 
   return (
     <div className="p-4 md:p-6">
-      <div className="space-y-4 max-w-3xl">
+      <div className="space-y-4 max-w-2xl mx-auto">
         {questions.map((question) => (
           <div
             key={question.id}

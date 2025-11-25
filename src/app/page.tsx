@@ -84,6 +84,14 @@ export default function Home() {
     setSelectedQuestionId(questionId);
   };
 
+  const handleMoveUp = (questionId: string) => {
+    dispatch({ type: "moveUp", id: questionId });
+  };
+
+  const handleMoveDown = (questionId: string) => {
+    dispatch({ type: "moveDown", id: questionId });
+  };
+
   const handleResponseChange = (questionId: string, value: string) => {
     setResponses((prev) => ({
       ...prev,
@@ -93,10 +101,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen bg-zinc-50">
-      <Header
-        onAddQuestion={handleAddQuestion}
-        onToggleSidebar={handleToggleSidebar}
-      />
+      <Header onToggleSidebar={handleToggleSidebar} />
       {validationError && (
         <div className="px-4 py-2 bg-red-50 border-b border-red-200">
           <p className="text-sm text-red-800">{validationError}</p>
@@ -107,7 +112,11 @@ export default function Home() {
         <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
-      <div className="flex-1 flex overflow-hidden relative">
+      <div
+        className={`flex-1 flex overflow-hidden relative ${
+          isJsonDrawerOpen ? "pb-0" : ""
+        }`}
+      >
         {/* Mobile sidebar overlay */}
         {isSidebarOpen && (
           <div
@@ -129,6 +138,8 @@ export default function Home() {
             selectedQuestionId={validSelectedQuestionId}
             onSelectQuestion={handleSelectQuestion}
             onAddQuestion={handleAddQuestion}
+            onMoveUp={handleMoveUp}
+            onMoveDown={handleMoveDown}
             onClose={handleCloseSidebar}
           />
         </div>
@@ -147,6 +158,7 @@ export default function Home() {
                 dispatch={dispatch}
                 onSelectQuestion={handleSelectQuestion}
                 onDeleteQuestion={handleDeleteQuestion}
+                onAddQuestion={handleAddQuestion}
               />
             )}
             {activeTab === "preview" && (
@@ -172,6 +184,7 @@ export default function Home() {
                 dispatch={dispatch}
                 onSelectQuestion={handleSelectQuestion}
                 onDeleteQuestion={handleDeleteQuestion}
+                onAddQuestion={handleAddQuestion}
               />
             </div>
             <div className="flex-1 overflow-y-auto bg-white">

@@ -11,7 +11,9 @@ export type QuestionAction =
   | { type: "changeType"; id: string; newType: QuestionType }
   | { type: "addOption"; questionId: string }
   | { type: "updateOption"; questionId: string; optionId: string; text: string }
-  | { type: "removeOption"; questionId: string; optionId: string };
+  | { type: "removeOption"; questionId: string; optionId: string }
+  | { type: "moveUp"; id: string }
+  | { type: "moveDown"; id: string };
 
 export function questionsReducer(
   state: Question[],
@@ -96,6 +98,28 @@ export function questionsReducer(
           : q
       );
 
+    case "moveUp": {
+      const index = state.findIndex((q) => q.id === action.id);
+      if (index <= 0) return state;
+      const newState = [...state];
+      [newState[index - 1], newState[index]] = [
+        newState[index],
+        newState[index - 1],
+      ];
+      return newState;
+    }
+
+    case "moveDown": {
+      const index = state.findIndex((q) => q.id === action.id);
+      if (index < 0 || index >= state.length - 1) return state;
+      const newState = [...state];
+      [newState[index], newState[index + 1]] = [
+        newState[index + 1],
+        newState[index],
+      ];
+      return newState;
+    }
+
     default:
       return state;
   }
@@ -109,9 +133,9 @@ export function createInitialQuestions(): Question[] {
       type: "multipleChoice",
       required: true,
       options: [
-        { id: "initial-option-1", text: "Very likely" },
-        { id: "initial-option-2", text: "Somewhat likely" },
-        { id: "initial-option-3", text: "Not likely" },
+        { id: crypto.randomUUID(), text: "Very likely" },
+        { id: crypto.randomUUID(), text: "Somewhat likely" },
+        { id: crypto.randomUUID(), text: "Not likely" },
       ],
     },
   ];
