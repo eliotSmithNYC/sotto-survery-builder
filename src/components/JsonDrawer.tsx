@@ -22,16 +22,16 @@ export default function JsonDrawer({
   return (
     <div
       className={`border-t border-zinc-200 bg-white shadow-lg transition-all duration-300 ease-in-out ${
-        isOpen ? "h-[40vh]" : "h-12"
+        isOpen ? "h-[40vh]" : "h-[48px]"
       }`}
     >
       {isOpen ? (
         <div className="h-full flex flex-col">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-200 bg-zinc-50">
+          <div className="flex items-center justify-center px-4 py-3 border-b border-zinc-200 bg-zinc-50 relative">
             <span className="text-sm font-semibold text-zinc-900">JSON</span>
             <button
               onClick={onToggle}
-              className="p-1.5 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200 rounded transition-colors"
+              className="absolute right-4 p-1.5 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200 rounded transition-colors"
               aria-label="Collapse JSON drawer"
             >
               <ChevronDown className="w-5 h-5" />
@@ -44,11 +44,11 @@ export default function JsonDrawer({
       ) : (
         <button
           onClick={onToggle}
-          className="w-full h-full flex items-center justify-between px-4 hover:bg-zinc-50 transition-colors"
+          className="w-full h-full flex items-center justify-center px-4 bg-zinc-50 hover:bg-zinc-100 transition-colors relative"
           aria-label="Expand JSON drawer"
         >
           <span className="text-sm font-semibold text-zinc-900">JSON</span>
-          <ChevronUp className="w-5 h-5 text-zinc-600" />
+          <ChevronUp className="w-5 h-5 text-zinc-600 absolute right-4" />
         </button>
       )}
     </div>
