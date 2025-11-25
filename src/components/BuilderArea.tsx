@@ -3,6 +3,7 @@
 import { Question } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
 import QuestionCard from "./QuestionCard";
+import Button from "./ui/Button";
 
 interface BuilderAreaProps {
   questions: Question[];
@@ -28,12 +29,9 @@ export default function BuilderArea({
       <div className="p-4 md:p-6">
         <div className="text-center py-12">
           <p className="text-zinc-600 mb-4">No questions yet</p>
-          <button
-            onClick={onAddQuestion}
-            className="px-4 py-2 text-sm font-medium text-white bg-zinc-900 rounded-md hover:bg-zinc-800 transition-colors"
-          >
+          <Button variant="primary" onClick={onAddQuestion}>
             Add question
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -53,12 +51,9 @@ export default function BuilderArea({
             onTypeChange={onTypeChange}
           />
         ))}
-        <button
-          onClick={onAddQuestion}
-          className="w-full px-4 py-2 text-sm font-medium text-zinc-900 bg-white border border-zinc-300 rounded-md hover:bg-zinc-50 transition-colors"
-        >
+        <Button variant="secondary" onClick={onAddQuestion} className="w-full">
           + Add question
-        </button>
+        </Button>
       </div>
     </div>
   );

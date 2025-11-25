@@ -3,6 +3,7 @@
 import { Question } from "@/lib/types";
 import ChevronUp from "./icons/ChevronUp";
 import ChevronDown from "./icons/ChevronDown";
+import Button from "./ui/Button";
 
 interface QuestionSidebarProps {
   questions: Question[];
@@ -118,12 +119,13 @@ export default function QuestionSidebar({
         </div>
       </div>
       <div className="p-4 border-t border-zinc-200">
-        <button
+        <Button
+          variant="primary"
           onClick={onAddQuestion}
-          className="w-full px-4 py-2 text-sm font-medium text-white bg-zinc-900 rounded-md hover:bg-zinc-800 transition-colors"
+          className="w-full"
         >
           Add question
-        </button>
+        </Button>
       </div>
     </div>
   );

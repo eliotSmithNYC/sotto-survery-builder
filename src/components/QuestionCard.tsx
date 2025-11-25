@@ -4,6 +4,9 @@ import { Question, QuestionType } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
 import XIcon from "./icons/XIcon";
 import ChevronDown from "./icons/ChevronDown";
+import Button from "./ui/Button";
+import Input from "./ui/Input";
+import Card from "./ui/Card";
 
 interface QuestionCardProps {
   question: Question;
@@ -80,10 +83,7 @@ export default function QuestionCard({
 
   if (!isSelected) {
     return (
-      <div
-        className="border border-zinc-200 rounded-lg bg-white cursor-pointer hover:bg-zinc-50 transition-colors"
-        onClick={onSelect}
-      >
+      <Card variant="hover" onClick={onSelect}>
         <div className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <span className="text-sm text-zinc-900 truncate">
@@ -98,42 +98,36 @@ export default function QuestionCard({
           </div>
           <ChevronDown className="w-4 h-4 text-zinc-400 flex-shrink-0" />
         </div>
-      </div>
+      </Card>
     );
   }
 
   return (
-    <div
-      className={`border border-zinc-200 rounded-lg bg-white ${
-        isSelected ? "ring-2 ring-zinc-900" : ""
-      }`}
-      onClick={onSelect}
-    >
+    <Card variant="selected" onClick={onSelect}>
       <div className="p-4 space-y-4">
         <div className="flex items-center justify-end">
-          <button
+          <Button
+            variant="destructive"
             onClick={(e) => {
               e.stopPropagation();
               onDelete();
             }}
-            className="text-sm text-red-600 hover:text-red-700 transition-colors"
           >
             Delete
-          </button>
+          </Button>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-zinc-900 mb-2">
             Question Label
           </label>
-          <input
+          <Input
             type="text"
             value={question.label}
             onChange={handleLabelChange}
             onFocus={onSelect}
             onClick={(e) => e.stopPropagation()}
             placeholder="Enter question text..."
-            className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
           />
         </div>
 
@@ -141,16 +135,16 @@ export default function QuestionCard({
           <label className="block text-sm font-medium text-zinc-900 mb-2">
             Question Type
           </label>
-          <select
+          <Input
+            type="select"
             value={question.type}
             onChange={handleTypeChange}
             onFocus={onSelect}
             onClick={(e) => e.stopPropagation()}
-            className="w-full px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
           >
             <option value="text">Freeform Text</option>
             <option value="multipleChoice">Multiple Choice</option>
-          </select>
+          </Input>
         </div>
 
         <div className="flex items-center gap-2">
@@ -179,7 +173,7 @@ export default function QuestionCard({
             <div className="space-y-2">
               {question.options.map((option, index) => (
                 <div key={option.id} className="flex items-center gap-2">
-                  <input
+                  <Input
                     type="text"
                     value={option.text}
                     onChange={(e) =>
@@ -188,35 +182,36 @@ export default function QuestionCard({
                     onFocus={onSelect}
                     onClick={(e) => e.stopPropagation()}
                     placeholder={`Option ${index + 1}`}
-                    className="flex-1 px-3 py-2 border border-zinc-300 rounded-md text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent"
+                    className="flex-1"
                   />
-                  <button
+                  <Button
+                    variant="ghost"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleRemoveOption(option.id);
                     }}
-                    className="p-2 text-zinc-600 hover:text-red-600 transition-colors"
                     aria-label="Remove option"
+                    className="text-zinc-600 hover:text-red-600"
                   >
                     <XIcon className="w-5 h-5" />
-                  </button>
+                  </Button>
                 </div>
               ))}
-              <button
+              <Button
+                variant="secondary"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleAddOption();
                 }}
-                className="text-left px-3 py-2 text-sm text-zinc-900 hover:text-green-600 hover:bg-zinc-50 border border-zinc-300 rounded-md transition-colors"
                 aria-label="Add option"
-                type="button"
+                className="text-left hover:text-green-600"
               >
                 + Add option
-              </button>
+              </Button>
             </div>
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 }
