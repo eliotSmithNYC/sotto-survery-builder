@@ -26,7 +26,9 @@ export default function PreviewQuestion({
       <label className="block text-sm font-medium text-zinc-900 mb-3">
         {question.label || "Untitled question"}
         {question.required && (
-          <span className="text-zinc-500 ml-1">*</span>
+          <span className="ml-2 text-red-600 font-semibold">
+            <span className="text-lg">*</span> Required
+          </span>
         )}
       </label>
 
@@ -65,4 +67,3 @@ export default function PreviewQuestion({
     </div>
   );
 }
-
