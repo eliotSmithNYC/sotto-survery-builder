@@ -127,6 +127,7 @@ export default function Home() {
                 questions={questions}
                 selectedQuestionId={validSelectedQuestionId}
                 dispatch={dispatch}
+                onSelectQuestion={handleSelectQuestion}
                 onDeleteQuestion={handleDeleteQuestion}
               />
             )}
@@ -151,6 +152,7 @@ export default function Home() {
                 questions={questions}
                 selectedQuestionId={validSelectedQuestionId}
                 dispatch={dispatch}
+                onSelectQuestion={handleSelectQuestion}
                 onDeleteQuestion={handleDeleteQuestion}
               />
             </div>

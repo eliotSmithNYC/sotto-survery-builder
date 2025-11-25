@@ -8,6 +8,7 @@ interface BuilderAreaProps {
   questions: Question[];
   selectedQuestionId?: string;
   dispatch: React.Dispatch<QuestionAction>;
+  onSelectQuestion: (questionId: string) => void;
   onDeleteQuestion: (questionId: string) => void;
 }
 
@@ -15,6 +16,7 @@ export default function BuilderArea({
   questions,
   selectedQuestionId,
   dispatch,
+  onSelectQuestion,
   onDeleteQuestion,
 }: BuilderAreaProps) {
   if (questions.length === 0) {
@@ -39,6 +41,7 @@ export default function BuilderArea({
             question={question}
             isSelected={selectedQuestionId === question.id}
             dispatch={dispatch}
+            onSelect={() => onSelectQuestion(question.id)}
             onDelete={() => onDeleteQuestion(question.id)}
           />
         ))}
