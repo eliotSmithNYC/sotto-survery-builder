@@ -40,10 +40,10 @@ export default function Home() {
 
   const handleAddQuestion = () => {
     if (questions.length > 0) {
-      const lastQuestion = questions[questions.length - 1];
-      if (!isQuestionValid(lastQuestion)) {
+      const invalidQuestion = questions.find((q) => !isQuestionValid(q));
+      if (invalidQuestion) {
         setValidationError(
-          "Please fill in all fields for the current question before adding a new one."
+          "Please fill in all fields for all questions before adding a new one."
         );
         setTimeout(() => setValidationError(null), 3000);
         return;
