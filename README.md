@@ -50,3 +50,4 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - Additional question types (ratings, dates, file uploads)
 
 The current structure makes adding these features straightforward - new question types fit into the reducer pattern, and the component composition allows for easy extension.
+<img width="2557" height="1318" alt="image" src="https://github.com/user-attachments/assets/37ee9abc-a65e-4db3-b0c8-bbe763b6772e" />
