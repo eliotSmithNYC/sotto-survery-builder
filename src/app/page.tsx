@@ -2,12 +2,8 @@
 
 import { useReducer, useState, useMemo } from "react";
 import Header from "@/components/Header";
-import Tabs from "@/components/Tabs";
-import QuestionSidebar from "@/components/QuestionSidebar";
-import BuilderArea from "@/components/BuilderArea";
-import PreviewArea from "@/components/PreviewArea";
-import JsonDrawer from "@/components/JsonDrawer";
-import JsonTab from "@/components/JsonTab";
+import ValidationBanner from "@/components/ValidationBanner";
+import ResponsiveLayout from "@/components/ResponsiveLayout";
 import {
   questionsReducer,
   createInitialQuestions,
@@ -111,135 +107,31 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-zinc-50">
       <Header onToggleSidebar={handleToggleSidebar} />
       {validationError && (
-        <div
-          className="px-4 py-2 bg-red-50 border-b border-red-200"
-          role="alert"
-          aria-live="polite"
-        >
-          <p className="text-sm text-red-800">{validationError}</p>
-        </div>
+        <ValidationBanner
+          message={validationError}
+          onDismiss={() => setValidationError(null)}
+        />
       )}
 
-      <div className="md:hidden">
-        <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
-      </div>
-
-      <div
-        className={`flex-1 flex overflow-hidden relative ${
-          isJsonDrawerOpen ? "pb-0" : ""
-        }`}
-      >
-        {/* Mobile sidebar overlay */}
-        {isSidebarOpen && (
-          <div
-            className="md:hidden fixed inset-0 bg-black/50 z-40"
-            onClick={handleCloseSidebar}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") {
-                handleCloseSidebar();
-              }
-            }}
-            role="button"
-            tabIndex={-1}
-            aria-label="Close sidebar"
-          />
-        )}
-
-        {/* Sidebar */}
-        <div
-          className={`fixed md:static inset-y-0 left-0 z-50 w-64 border-r border-zinc-200 bg-white transform transition-transform duration-300 ease-in-out ${
-            isSidebarOpen
-              ? "translate-x-0"
-              : "-translate-x-full md:translate-x-0"
-          }`}
-        >
-          <QuestionSidebar
-            questions={questions}
-            selectedQuestionId={validSelectedQuestionId}
-            onSelectQuestion={handleSelectQuestion}
-            onAddQuestion={handleAddQuestion}
-            onMoveUp={handleMoveUp}
-            onMoveDown={handleMoveDown}
-            onClose={handleCloseSidebar}
-          />
-        </div>
-
-        <div className="flex-1 flex overflow-hidden">
-          {/* Mobile: Tab-based content */}
-          <div
-            className={`flex-1 bg-white md:hidden ${
-              activeTab === "json" ? "overflow-hidden" : "overflow-y-auto"
-            }`}
-          >
-            {activeTab === "build" && (
-              <BuilderArea
-                questions={questions}
-                selectedQuestionId={validSelectedQuestionId}
-                dispatch={dispatch}
-                onSelectQuestion={handleSelectQuestion}
-                onDeleteQuestion={handleDeleteQuestion}
-                onAddQuestion={handleAddQuestion}
-                onTypeChange={handleTypeChange}
-              />
-            )}
-            {activeTab === "preview" && (
-              <PreviewArea
-                questions={questions}
-                selectedQuestionId={validSelectedQuestionId}
-                responses={responses}
-                onResponseChange={handleResponseChange}
-                onSelectQuestion={setSelectedQuestionId}
-              />
-            )}
-            {activeTab === "json" && (
-              <JsonTab questions={questions} responses={responses} />
-            )}
-          </div>
-
-          {/* Desktop: Side-by-side Builder and Preview */}
-          <div className="hidden md:flex flex-1 overflow-hidden">
-            <div className="flex-1 flex flex-col overflow-hidden bg-white border-r border-zinc-200">
-              <div className="px-6 py-4 border-b border-zinc-200 bg-zinc-50">
-                <h2 className="text-sm font-semibold text-zinc-900">Builder</h2>
-              </div>
-              <div className="flex-1 overflow-y-auto">
-                <BuilderArea
-                  questions={questions}
-                  selectedQuestionId={validSelectedQuestionId}
-                  dispatch={dispatch}
-                  onSelectQuestion={handleSelectQuestion}
-                  onDeleteQuestion={handleDeleteQuestion}
-                  onAddQuestion={handleAddQuestion}
-                  onTypeChange={handleTypeChange}
-                />
-              </div>
-            </div>
-            <div className="flex-1 flex flex-col overflow-hidden bg-white">
-              <div className="px-6 py-4 border-b border-zinc-200 bg-zinc-50">
-                <h2 className="text-sm font-semibold text-zinc-900">Preview</h2>
-              </div>
-              <div className="flex-1 overflow-y-auto">
-                <PreviewArea
-                  questions={questions}
-                  selectedQuestionId={validSelectedQuestionId}
-                  responses={responses}
-                  onResponseChange={handleResponseChange}
-                  onSelectQuestion={setSelectedQuestionId}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="hidden md:block">
-        <JsonDrawer
-          questions={questions}
-          responses={responses}
-          isOpen={isJsonDrawerOpen}
-          onToggle={() => setIsJsonDrawerOpen(!isJsonDrawerOpen)}
-        />
-      </div>
+      <ResponsiveLayout
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        isSidebarOpen={isSidebarOpen}
+        onCloseSidebar={handleCloseSidebar}
+        questions={questions}
+        selectedQuestionId={validSelectedQuestionId}
+        onSelectQuestion={handleSelectQuestion}
+        onAddQuestion={handleAddQuestion}
+        onMoveUp={handleMoveUp}
+        onMoveDown={handleMoveDown}
+        dispatch={dispatch}
+        onDeleteQuestion={handleDeleteQuestion}
+        onTypeChange={handleTypeChange}
+        responses={responses}
+        onResponseChange={handleResponseChange}
+        isJsonDrawerOpen={isJsonDrawerOpen}
+        onToggleJsonDrawer={() => setIsJsonDrawerOpen(!isJsonDrawerOpen)}
+      />
     </div>
   );
 }
