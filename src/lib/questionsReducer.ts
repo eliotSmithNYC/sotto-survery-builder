@@ -134,6 +134,10 @@ export function questionsReducer(
 }
 
 export function createInitialQuestions(): Question[] {
+  // Note: We use stable IDs for the initial question to avoid hydration mismatches
+  // between server and client rendering. In production, this would use a deterministic
+  // hash based on user info and date/visit to ensure uniqueness across surveys
+  // while maintaining consistency between SSR and client hydration.
   return [
     {
       id: "initial-question-1",
@@ -141,9 +145,9 @@ export function createInitialQuestions(): Question[] {
       type: "multipleChoice",
       required: true,
       options: [
-        { id: crypto.randomUUID(), text: "Very likely" },
-        { id: crypto.randomUUID(), text: "Somewhat likely" },
-        { id: crypto.randomUUID(), text: "Not likely" },
+        { id: "initial-option-1", text: "Very likely" },
+        { id: "initial-option-2", text: "Somewhat likely" },
+        { id: "initial-option-3", text: "Not likely" },
       ],
     },
   ];
