@@ -21,7 +21,7 @@ export default function JsonDrawer({
   return (
     <div
       className={`border-t border-zinc-200 bg-white transition-all duration-300 ease-in-out ${
-        isOpen ? "h-96" : "h-12"
+        isOpen ? "h-screen md:h-[50vh]" : "h-12"
       }`}
     >
       {isOpen ? (

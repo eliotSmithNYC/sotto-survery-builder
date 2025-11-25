@@ -11,7 +11,7 @@ interface JsonTabProps {
 
 export default function JsonTab({ questions, responses }: JsonTabProps) {
   return (
-    <div className="h-full overflow-hidden bg-white">
+    <div className="h-screen overflow-hidden bg-white">
       <JsonPanel questions={questions} responses={responses} />
     </div>
   );

@@ -104,14 +104,14 @@ export function questionsReducer(
 export function createInitialQuestions(): Question[] {
   return [
     {
-      id: crypto.randomUUID(),
+      id: "initial-question-1",
       label: "How likely are you to recommend us to a friend?",
       type: "multipleChoice",
       required: true,
       options: [
-        { id: crypto.randomUUID(), text: "Very likely" },
-        { id: crypto.randomUUID(), text: "Somewhat likely" },
-        { id: crypto.randomUUID(), text: "Not likely" },
+        { id: "initial-option-1", text: "Very likely" },
+        { id: "initial-option-2", text: "Somewhat likely" },
+        { id: "initial-option-3", text: "Not likely" },
       ],
     },
   ];
