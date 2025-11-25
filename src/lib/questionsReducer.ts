@@ -1,7 +1,7 @@
 import { Question, QuestionType } from "./types";
 
 export type QuestionAction =
-  | { type: "addQuestion" }
+  | { type: "addQuestion"; questionId?: string }
   | { type: "removeQuestion"; id: string }
   | {
       type: "updateQuestion";
@@ -22,7 +22,7 @@ export function questionsReducer(
       return [
         ...state,
         {
-          id: crypto.randomUUID(),
+          id: action.questionId || crypto.randomUUID(),
           label: "",
           type: "text",
           required: false,

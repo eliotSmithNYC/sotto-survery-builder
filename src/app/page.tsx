@@ -41,14 +41,9 @@ export default function Home() {
   }, [questions, selectedQuestionId]);
 
   const handleAddQuestion = () => {
-    const newQuestions = questionsReducer(questions, { type: "addQuestion" });
-    dispatch({ type: "addQuestion" });
-    if (newQuestions.length > 0) {
-      const lastQuestion = newQuestions[newQuestions.length - 1];
-      if (lastQuestion) {
-        setSelectedQuestionId(lastQuestion.id);
-      }
-    }
+    const newQuestionId = crypto.randomUUID();
+    dispatch({ type: "addQuestion", questionId: newQuestionId });
+    setSelectedQuestionId(newQuestionId);
   };
 
   const handleDeleteQuestion = (questionId: string) => {
