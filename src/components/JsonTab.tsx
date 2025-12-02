@@ -16,4 +16,3 @@ export default function JsonTab({ questions, responses }: JsonTabProps) {
     </div>
   );
 }
-

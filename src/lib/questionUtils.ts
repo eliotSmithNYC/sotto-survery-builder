@@ -11,4 +11,3 @@ export function getQuestionTypeTag(type: QuestionType): string {
 export function getRequiredLabel(required: boolean): string {
   return required ? "Required" : "Optional";
 }
-

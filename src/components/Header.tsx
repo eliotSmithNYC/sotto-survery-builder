@@ -7,9 +7,7 @@ interface HeaderProps {
   onToggleSidebar?: () => void;
 }
 
-export default function Header({
-  onToggleSidebar,
-}: HeaderProps) {
+export default function Header({ onToggleSidebar }: HeaderProps) {
   return (
     <header className="border-b border-zinc-200 bg-white">
       <div className="flex items-center justify-between px-4 py-3 md:px-6">

@@ -23,17 +23,12 @@ export default function Button({
       "px-4 py-2 text-sm font-medium text-zinc-900 bg-white border border-zinc-300 rounded-md hover:bg-zinc-50 transition-colors",
     ghost:
       "p-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200 rounded transition-colors",
-    destructive:
-      "text-sm text-red-600 hover:text-red-700 transition-colors",
+    destructive: "text-sm text-red-600 hover:text-red-700 transition-colors",
   };
 
   return (
-    <button
-      className={cn(variantStyles[variant], className)}
-      {...props}
-    >
+    <button className={cn(variantStyles[variant], className)} {...props}>
       {children}
     </button>
   );
 }
-

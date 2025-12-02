@@ -119,11 +119,7 @@ export default function QuestionSidebar({
         </div>
       </div>
       <div className="p-4 border-t border-zinc-200">
-        <Button
-          variant="primary"
-          onClick={onAddQuestion}
-          className="w-full"
-        >
+        <Button variant="primary" onClick={onAddQuestion} className="w-full">
           Add question
         </Button>
       </div>

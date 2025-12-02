@@ -2,10 +2,7 @@
 
 import { Question, QuestionType } from "@/lib/types";
 import { QuestionAction } from "@/lib/questionsReducer";
-import {
-  getQuestionTypeLabel,
-  getRequiredLabel,
-} from "@/lib/questionUtils";
+import { getQuestionTypeLabel, getRequiredLabel } from "@/lib/questionUtils";
 import XIcon from "./icons/XIcon";
 import ChevronDown from "./icons/ChevronDown";
 import Button from "./ui/Button";
@@ -162,8 +159,8 @@ export default function QuestionCard({
             <option value="multipleChoice">Multiple Choice</option>
           </Input>
           <span id={`type-${question.id}-description`} className="sr-only">
-            Choose whether this question accepts freeform text or multiple choice
-            options
+            Choose whether this question accepts freeform text or multiple
+            choice options
           </span>
         </div>
 
