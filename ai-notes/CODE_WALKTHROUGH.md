@@ -203,7 +203,10 @@ export type SurveyResponse = Record<string, string | MultipleChoiceResponse>;
 2. **Options Array for All Questions**
    - `options: ChoiceOption[]` exists on all questions
    - Ignored for text questions (documented in comment)
-   - Alternative: discriminated union, but this is simpler
+   - **Trade-off**: Simpler structure vs. type safety
+   - **Why this choice**: Pragmatic for MVP - avoids type narrowing everywhere, easier serialization
+   - **When to refactor**: If adding more question types or if bugs emerge from accessing options on text questions
+   - **Alternative**: Discriminated union (see improved implementation below)
 
 3. **Response Type Design**
    - `SurveyResponse` uses `Record<string, ...>` for O(1) lookups
