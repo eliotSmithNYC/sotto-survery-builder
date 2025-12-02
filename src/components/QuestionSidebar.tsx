@@ -13,6 +13,7 @@ interface QuestionSidebarProps {
   onAddQuestion: () => void;
   onMoveUp?: (questionId: string) => void;
   onMoveDown?: (questionId: string) => void;
+  // close sidebar only on mobile
   onClose?: () => void;
 }
 
@@ -31,6 +32,9 @@ export default function QuestionSidebar({
   };
 
   const handleMoveUp = (e: React.MouseEvent, questionId: string) => {
+    // the entire question pill is a button - clicking focuses the question card and preview.
+    // clicking move up or down should not focus the question card and preview.
+    // so we need to stop propagation of the click event.
     e.stopPropagation();
     onMoveUp?.(questionId);
   };
