@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# override global gitignore for ai-notes in this repo
+!ai-notes/
+
