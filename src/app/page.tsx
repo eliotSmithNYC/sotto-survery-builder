@@ -27,6 +27,9 @@ export default function Home() {
   >(questions.length > 0 ? questions[0].id : undefined);
   const [validationError, setValidationError] = useState<string | null>(null);
 
+  // Ensures the selected question ID is always valid. If the selected question
+  // was deleted or doesn't exist, falls back to the first question to prevent
+  // stale references and maintain UI consistency.
   const validSelectedQuestionId = useMemo(() => {
     if (questions.length === 0) {
       return undefined;

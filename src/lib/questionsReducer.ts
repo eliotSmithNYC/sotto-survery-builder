@@ -36,6 +36,7 @@ export function questionsReducer(
       return state.filter((q) => q.id !== action.id);
 
     case "updateQuestion":
+      // could unintentionally overwrite other fields
       return state.map((q) =>
         q.id === action.id
           ? {
@@ -49,6 +50,11 @@ export function questionsReducer(
       return state.map((q) => {
         if (q.id !== action.id) return q;
 
+        /*
+         * The final return path is only reachable if newType === "multipleChoice" and options already exist, which isn't obvious.
+         * The logic could be more explicit about what happens in each transition.
+         * Suggestion: make transitions explicit:
+         */
         if (action.newType === "multipleChoice" && q.options.length === 0) {
           return {
             ...q,
